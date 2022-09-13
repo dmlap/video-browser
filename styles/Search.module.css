@@ -1,0 +1,11 @@
+.channelList {
+  list-style: none;
+}
+.channelItem {
+  margin: 1rem 0;
+}
+
+.artwork {
+  display: block;
+  border: inset thick;
+}
