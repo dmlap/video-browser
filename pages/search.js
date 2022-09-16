@@ -2,7 +2,6 @@ import useSWR from 'swr'
 
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import SearchForm from './search-form'
 import styles from '../styles/Search.module.css'
 
 const fetcher = (...args) => fetch(...args).then((response) => response.json())
@@ -40,8 +39,7 @@ export default function Search() {
             </Link>
             </li>)
   })
-  return (<>
-          <SearchForm query={q} />
-          <ol className={styles.channelList}>{results}</ol>
-          </>)
+  return (<ol className={styles.channelList}>
+            {results}
+          </ol>)
 }
