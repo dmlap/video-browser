@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 import uniqueId from '../src/uniqueId'
 
@@ -44,5 +45,6 @@ export default function Navigation (attributes) {
                      onChange={handleChange}
                      value={query} />
             </form>
+            <Link href="/"><a className={styles.home}>Home</a></Link>
           </nav>)
 }

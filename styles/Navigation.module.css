@@ -5,9 +5,11 @@
   display: flex;
   padding: .6rem 1.5rem;
 }
-.back {
+.back, .home {
   flex: 0 0 auto;
   line-height: 1.5rem;
+}
+.back {
   padding-right: 1rem;
 }
 .form {
@@ -22,6 +24,6 @@
 .input {
   background-color: #e5e5e5;
   border: inset;
-  flex: 1 0 20rem;
+  flex: 1 0 10rem;
   padding: .2rem;
 }

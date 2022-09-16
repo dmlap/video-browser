@@ -1,8 +1,15 @@
 .channelList {
+  display: grid;
   list-style: none;
+  margin: 0;
+  padding: 0 2rem;
 }
 .channelItem {
-  margin: 1rem 0;
+  padding: 1rem 0;
+}
+
+.channelItem + .channelItem {
+  border-top: .2rem groove;
 }
 
 .artwork {
