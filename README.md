@@ -20,8 +20,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Background Info
-[Searching iTunes for podcasts](https://performance-partners.apple.com/resources/documentation/itunes-store-web-service-search-api/#searching)
+## Names
+- [Terrazzo](https://en.wikipedia.org/wiki/Terrazzo): a composite material used for floor and wall treatments. Derived from mosaics (a play on Mosaic, one of the first web browsers)
+- vodcast
 
 ## Learn More
 
