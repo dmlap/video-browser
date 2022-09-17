@@ -1,15 +1,28 @@
 .channelList {
-  display: grid;
   list-style: none;
   margin: 0;
-  padding: 0 2rem;
+  padding: 0;
 }
 .channelItem {
-  padding: 1rem 0;
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  overflow: hidden;
+  padding-top: 1rem;
+}
+.channelItem h2 {
+  font-size: 1.25em;
+  margin-bottom: .5em;
 }
 
-.channelItem + .channelItem {
-  border-top: .2rem groove;
+.channelDetail {
+  border-bottom: .2rem groove;
+  box-sizing: content-box;
+  height: 100px;
+  margin-left: 1rem;
+  padding-bottom: 1rem;
+}
+.channelItem:last-child .channelDetail {
+  border-bottom: none;
 }
 
 .artwork {

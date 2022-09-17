@@ -5,4 +5,5 @@
 .main {
   height: 100vh;
   overflow: auto;
+  padding: 0 2rem;
 }
