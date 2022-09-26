@@ -1,1 +1,3 @@
-export default (...args) => fetch(...args).then((response) => response.json())
+export default function JSONFetcher (...args) {
+  return fetch(...args).then((response) => response.json())
+}

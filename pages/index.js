@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
+import RelLink from '../components/rel-link'
 
 import Layout from '../components/layout'
 import nameToPathPart from '../src/name-to-path-part'
@@ -32,7 +32,7 @@ export default function Home() {
 
   const favoriteList = favorites.map((favorite) => {
     return (<li key={favorite.channelId}>
-            <Link href={
+            <RelLink href={
               '/' + [
                 'channel',
                 favorite.channelId,
@@ -40,7 +40,7 @@ export default function Home() {
               ].join('/')
             }>
                 <a>{favorite.channelCensoredName}</a>
-              </Link>
+              </RelLink>
             </li>)
   })
   const favoriteHelp =
@@ -62,9 +62,9 @@ export default function Home() {
             </h1>
 
             <ol>
-              <li><Link href="/channels/one"><a>One</a></Link></li>
-              <li><Link href="/channels/two"><a>Two</a></Link></li>
-              <li><Link href="/channels/three"><a>Three</a></Link></li>
+              <li><RelLink href="/channels/one">One</RelLink></li>
+              <li><RelLink href="/channels/two">Two</RelLink></li>
+              <li><RelLink href="/channels/three">Three</RelLink></li>
             </ol>
           </section>
           </>)
