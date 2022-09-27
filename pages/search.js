@@ -44,7 +44,7 @@ export default function Search() {
             <RelLink href={channelUrl}>
               <img className={styles.artwork}
                    src={result.artworkUrl600}
-                   width="100" alt={result.collectionCensoredName} />
+                   alt={result.collectionCensoredName} />
             </RelLink>
             <div className={styles.channelDetail}>
               <h2><RelLink href={channelUrl}>{result.collectionCensoredName}</RelLink></h2>

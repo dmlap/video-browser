@@ -5,7 +5,7 @@
 }
 .channelItem {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 7rem 1fr;
   overflow: hidden;
   padding-top: 1rem;
 }
@@ -17,7 +17,7 @@
 .channelDetail {
   border-bottom: .2rem groove;
   box-sizing: content-box;
-  height: 100px;
+  height: 7rem;
   margin-left: 1rem;
   padding-bottom: 1rem;
 }
@@ -26,6 +26,8 @@
 }
 
 .artwork {
-  display: block;
   border: inset thick;
+  display: block;
+  height: 7rem;
+  width: 7rem;
 }
