@@ -6,7 +6,6 @@ import RelLink from '../components/rel-link'
 import Error from '../components/error'
 import styles from '../styles/Search.module.css'
 
-import fetcher from '../src/json-fetcher'
 import nameToPathPart from '../src/name-to-path-part'
 import { OFFLINE } from '../env'
 
@@ -21,7 +20,9 @@ export default function Search() {
   const router = useRouter()
   const { q } = router.query
 
-  const { data, error } = useSWR(`${SEARCH_URL}?term=${q}&entity=podcast&explicit=No`, fetcher)
+  const { data, error } = useSWR(`${SEARCH_URL}?term=${q}&entity=podcast&explicit=No`, (url) => {
+    return fetch(url + `&n=${Math.round(Math.random() * 9e8)}`).then((response) => response.json())
+  })
 
   if (error) {
     console.error(error)
