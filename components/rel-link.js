@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-function buildPath (router) {
+export function buildPath (router) {
   // "/" -> ['', '']
   // "/a/b/c" -> ['', 'a', 'b', 'c']
   // "/a?q=c" -> ['', 'a']

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import RelLink from './rel-link'
+import { buildPath } from './rel-link'
 
 import uniqueId from '../src/uniqueId'
 
@@ -29,7 +30,7 @@ export default function Navigation (attributes) {
   function search () {
     event.preventDefault()
     if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
+      router.push(`${buildPath(router)}/search?q=${encodeURIComponent(query)}`)
     }
   }
 

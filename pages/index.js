@@ -39,7 +39,7 @@ export default function Home() {
                 nameToPathPart(favorite.channelCensoredName)
               ].join('/')
             }>
-                <a>{favorite.channelCensoredName}</a>
+                {favorite.channelCensoredName}
               </RelLink>
             </li>)
   })
