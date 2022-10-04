@@ -7,7 +7,7 @@ const nextConfig = {
   // directory so URLs starting from "/" are pointing to the wrong
   // level of the directory hierarchy. Avoid this by using relative
   // URLs.
-  assetPrefix: '.'
+  // assetPrefix: '.'
 }
 
 module.exports = nextConfig
