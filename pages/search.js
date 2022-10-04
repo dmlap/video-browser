@@ -53,7 +53,9 @@ export default function Search() {
             </div>
             </li>)
   })
-  return (<ol className={styles.channelList}>
-            {results}
-          </ol>)
+  return (<main>
+            <ol className={styles.channelList}>
+              {results}
+            </ol>
+          </main>)
 }

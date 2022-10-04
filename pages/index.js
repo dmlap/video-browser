@@ -48,24 +48,24 @@ export default function Home() {
            {"Subscribe to channels you like and they'll show up here"}
          </small>)
 
-  return (<>
-          <section>
-            <h1>
-              Favorites
-            </h1>
+  return (<main>
+            <section>
+              <h1>
+                Favorites
+              </h1>
 
-            { favorites.length ? (<ul>{favoriteList}</ul>) : favoriteHelp }
-          </section>
-          <section>
-            <h1>
-              Recents
-            </h1>
+              { favorites.length ? (<ul>{favoriteList}</ul>) : favoriteHelp }
+            </section>
+            <section>
+              <h1>
+                Recents
+              </h1>
 
-            <ol>
-              <li><RelLink href="/channels/one">One</RelLink></li>
-              <li><RelLink href="/channels/two">Two</RelLink></li>
-              <li><RelLink href="/channels/three">Three</RelLink></li>
-            </ol>
-          </section>
-          </>)
+              <ol>
+                <li><RelLink href="/channels/one">One</RelLink></li>
+                <li><RelLink href="/channels/two">Two</RelLink></li>
+                <li><RelLink href="/channels/three">Three</RelLink></li>
+              </ol>
+            </section>
+          </main>)
 }

@@ -1,0 +1,44 @@
+.overview {
+  align-content: center;
+  display: flex;
+  column-gap: 1em;
+}
+.detail, .player {
+  flex: 1 1 auto;
+}
+.header h1 {
+  margin: 1em 0 .5em;
+}
+.video {
+  padding-top: 1.5em;
+  width: 100%;
+  max-height: 40vh;
+}
+
+.list h2 {
+  margin: .5em 0 .5em;
+}
+.videos {
+  column-gap: .5em;
+  display: flex;
+  list-style: none;
+  margin: 1.5em 0 1em;
+  overflow: auto;
+  padding: 0;
+}
+
+.videoItem {
+  border: .5em solid transparent;
+  flex: 1 0 auto;
+  padding: .5em;
+  width: 13em;
+}
+.videoItem:hover, .videoItem:focus {
+  border: .5em solid #3b78ff;
+}
+.videoItem img {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 7.1325em;
+}

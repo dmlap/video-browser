@@ -1,0 +1,33 @@
+.main {
+  height: 100vh;
+  background-size: auto 100%;
+  background-position: 40vw 0;
+  background-repeat: no-repeat;
+}
+
+.title {
+  color: #f2f2f2;
+  width: 50%;
+}
+
+.video, .overview {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  top: 2.2em;
+
+  padding: 0 2em;
+
+  transition: visibility 0s linear .5s, opacity .5s linear;
+}
+.video {
+  opacity: 0;
+}
+.playing .video {
+  opacity: 1;
+}
+.playing .overview {
+  opacity: 0;
+  visibility: hidden;
+}

@@ -2,42 +2,20 @@ import useSWR from 'swr'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
 
+import RelLink from '../../components/rel-link.js'
 import Error from '../../components/error'
-
 import { OFFLINE } from '../../env'
+import nameToPathPart from '../../src/name-to-path-part'
+import itemToVideo from '../../src/item-to-video'
+
+import styles from '../../styles/Channel.module.css'
 
 const textFetcher =
       (...args) => fetch(...args).then((response) => response.text())
 
 const itunesNS = 'http://www.itunes.com/dtds/podcast-1.0.dtd'
-function textToChannel (feedXml) {
-  function itemToVideo (itemEl) {
-    const enclosure = itemEl.querySelector('enclosure')
-    const type = enclosure.attributes.type.textContent
-
-    if (!type.startsWith('video')) {
-      // filter out non-video episodes
-      return
-    }
-
-    const result = {
-      title: itemEl.querySelector('title').textContent,
-      sources: [{
-        src: enclosure.attributes.url.textContent,
-        type: type
-      }]
-    }
-
-    const image = enclosure.getElementsByTagNameNS(itunesNS, 'image')[0]
-    if (image) {
-      result.poster = image.attributes.href.textContent
-    }
-
-    return result
-  }
-
+function parseChannel (feedXml) {
   const dom = new DOMParser().parseFromString(feedXml, 'application/xml')
   const channel = dom.querySelector('channel')
   const result = {
@@ -74,25 +52,24 @@ export default function Channel () {
     setLoaded(true)
   }, [feedUrl])
 
-  // load the channel info from the API
-  const { data, error } =
-        useSWR(() => {
-          if (!feedUrl) {
-            // feedUrl will not be available during static page
-            // generation
-            // signal that the request should be retried by returning
-            // false
-            return false
-          }
+  // load the channel info from the RSS feed
+  const { data, error } = useSWR(() => {
+    if (!feedUrl) {
+      // feedUrl will not be available during static page
+      // generation
+      // signal that the request should be retried by returning
+      // false
+      return false
+    }
 
-          if (!window) {
-            // DOMParser is not available in node.js so don't bother
-            // fetching the data
-            return false
-          }
+    if (!window) {
+      // DOMParser is not available in node.js so don't bother
+      // fetching the data
+      return false
+    }
 
-          return feedUrl
-        }, textFetcher)
+    return feedUrl
+  }, textFetcher)
 
   if (!feedUrl) {
     return (<div>Loading...</div>)
@@ -107,7 +84,7 @@ export default function Channel () {
     return (<div>Loading...</div>)
   }
 
-  const channel = textToChannel(data)
+  const channel = parseChannel(data)
 
   function toggleSubscription (event) {
     event.preventDefault()
@@ -120,37 +97,51 @@ export default function Channel () {
     setSubscribed(!subscribed)
   }
 
-  return (<>
-          <header>
-            <h1>{channel.title}</h1>
-            <p>{channel.category}</p>
-          </header>
-          <video poster={channel.image} controls>
-          {
-            channel.videos[0] && channel.videos[0].sources.map((source, ix) => {
-              return (<source key={ix} src={source.src} type={source.type} />)
-            })
-          }
-          </video>
+  return (<main>
+            <section className={styles.overview}>
+            <div className={styles.detail}>
+              <header className={styles.header}>
+                <h1>{channel.title}</h1>
+                <p>{channel.category}</p>
+              </header>
 
-          <form onSubmit={toggleSubscription}>
-          { loaded &&
-            (<button type="submit">{ subscribed ? 'Unsubscribe' : 'Subscribe'}</button>)
-          }
-          </form>
+              <p className={styles.description}>{channel.description}</p>
+              <form className={styles.subscribe} onSubmit={toggleSubscription}>
+              { loaded &&
+                (<button type="submit">{ subscribed ? 'Unsubscribe' : 'Subscribe'}</button>)
+              }
+              </form>
+              </div>
 
-          <ol>
-          {
-            channel.videos.map((video, ix) => {
-              return (<li key={ix}>
-                      <img src={video.poster}
-                           width="160"
-                           height="90"
-                           alt={`'${video.title}' artwork`} />
-                      {video.title}
-                      </li>)
-            })
-          }
-          </ol>
-          </>)
+              <div className={styles.player}>
+                <video className={styles.video} poster={channel.image} controls>
+                {
+                  channel.videos[0] && channel.videos[0].sources.map((source, ix) => {
+                    return (<source key={ix} src={source.src} type={source.type} />)
+                  })
+                }
+                </video>
+              </div>
+            </section>
+
+            <section className={styles.list}>
+              <h2>Episodes</h2>
+              <ol className={styles.videos}>
+              {
+                channel.videos.map((video, ix) => {
+                  return (<li key={ix} className={styles.videoItem}>
+                          <RelLink href={
+                            `/channel/${name}/${nameToPathPart(video.title)}`
+                              + `?feedUrl=${feedUrl}&id=${video.id}`
+                          }>
+                            <img src={video.poster}
+                                 alt="video artwork" />
+                            {video.title}
+                          </RelLink>
+                          </li>)
+                })
+              }
+              </ol>
+            </section>
+          </main>)
 }

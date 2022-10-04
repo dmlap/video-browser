@@ -1,0 +1,105 @@
+import useSWR from 'swr'
+
+import { createRef, useState } from 'react'
+import { useRouter } from 'next/router'
+
+import Error from '../../../components/error'
+import itemToVideo from '../../../src/item-to-video'
+
+import styles from '../../../styles/Video.module.css'
+
+const textFetcher =
+      (...args) => fetch(...args).then((response) => response.text())
+
+function findItemEl (feedDom, id) {
+  const guids = feedDom.querySelectorAll('item > guid')
+  for (const guid of guids) {
+    if (guid.textContent === id) {
+      return guid.parentElement
+    }
+  }
+
+  const enclosures = feedDom.querySelectorAll('item > enclosure')
+  for (const enclosure of enclosures) {
+    if (enclosure.src === id) {
+      return enclosure.parentElement
+    }
+  }
+
+  throw new Error(`Failed to find item element associated with id "${id}"`)
+}
+
+function parseVideo (feedXml, id) {
+  const dom = new DOMParser().parseFromString(feedXml, 'application/xml')
+  const item = findItemEl(dom, id)
+
+  return itemToVideo(item)
+}
+
+
+export default function Video () {
+  const router = useRouter()
+  const { name, title, feedUrl, id } = router.query
+  const [playing, setPlaying] = useState(false)
+  const videoRef = createRef()
+
+  // load the channel info from the RSS feed
+  const { data, error } = useSWR(() => {
+    if (!feedUrl) {
+      // feedUrl will not be available during static page
+      // generation
+      // signal that the request should be retried by returning
+      // false
+      return false
+    }
+
+    if (!window) {
+      // DOMParser is not available in node.js so don't bother
+      // fetching the data
+      return false
+    }
+
+    return feedUrl
+  }, textFetcher)
+
+  if (!feedUrl) {
+    return (<div>Loading...</div>)
+  }
+
+  if (error) {
+    console.error(error)
+    return (<Error message={error.message} />)
+  }
+
+  if (!data) {
+    return (<div>Loading...</div>)
+  }
+
+  function playVideo (event) {
+    videoRef.current.play()
+    setPlaying(true)
+  }
+
+  const video = parseVideo(data, id)
+
+  return (<main className={styles.main + (playing ? ' ' + styles.playing : '')}
+                style={{
+                  backgroundImage: `radial-gradient(transparent, #0c0c0c 70%), url(${video.poster})`
+                }}>
+            <video className={styles.video}
+                   ref={videoRef}
+                   playsInline
+                   controls>
+            {
+              video.sources.map((source) => {
+                return (<source key={source.src} src={source.src} type={source.type} />)
+              })
+            }
+            </video>
+            <div className={styles.overview}>
+              <h1 className={styles.title}>{video.title}</h1>
+              { video.description && (<p>{video.description}</p>) }
+          <button onClick={playVideo} className={styles.playButton}>Play</button>
+            </div>
+          </main>)
+}

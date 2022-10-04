@@ -1,7 +1,7 @@
 html,
 body {
-  background: white;
-  color: black;
+  color: #f2f2f2;
+  background: #0c0c0c;
   padding: 0;
   margin: 0;
   line-height: 1.75;
@@ -10,16 +10,41 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+h1,h2,h3,h4,h5,h6 {
+  margin: 1.5em 0 1em;
+}
+a, a:visited, a:hover {
+  color: #3b78ff;
+}
+
+p,ul,ol {
+  margin-bottom: 2em;
+  color: #f2f2f2;
+}
+
 * {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+/* padding on the root NextJS element so content doesn't bump the edge
+   of the viewport */
+body > div > * {
+  padding: 0 2rem;
 }
+
+button {
+  font-size: 1.25em;
+  padding: .5em 1em;
+  border: .1em outset;
+}
+
+
+/* @media (prefers-color-scheme: light) { */
+/*   html { */
+/*     color-scheme: light; */
+/*   } */
+/*   body { */
+/*     color: #0c0c0c; */
+/*     background: #f2f2f2; */
+/*   } */
+/* } */
