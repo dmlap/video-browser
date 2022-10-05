@@ -8,6 +8,7 @@ import Error from '../../components/error'
 import { OFFLINE } from '../../env'
 import nameToPathPart from '../../src/name-to-path-part'
 import itemToVideo from '../../src/item-to-video'
+import { useFavoritesStorage } from '../../src/storage'
 
 import styles from '../../styles/Channel.module.css'
 
@@ -15,10 +16,11 @@ const textFetcher =
       (...args) => fetch(...args).then((response) => response.text())
 
 const itunesNS = 'http://www.itunes.com/dtds/podcast-1.0.dtd'
-function parseChannel (feedXml) {
+function parseChannel (feedUrl, feedXml) {
   const dom = new DOMParser().parseFromString(feedXml, 'application/xml')
   const channel = dom.querySelector('channel')
   const result = {
+    feedUrl,
     title: dom.querySelector('channel > title').textContent,
     description: dom.querySelector('channel > description').textContent,
     image: channel.getElementsByTagNameNS(itunesNS, 'image')[0].attributes.href.textContent,
@@ -42,15 +44,13 @@ function parseChannel (feedXml) {
 
 export default function Channel () {
   const router = useRouter()
+  const favoritesStorage = useFavoritesStorage()
   const { name, feedUrl } = router.query
-  const [loaded, setLoaded] = useState(false)
-  const [subscribed, setSubscribed] = useState(false)
 
-  // load subscription state from localStorage
-  useEffect(() => {
-    setSubscribed(!!localStorage.getItem(feedUrl))
-    setLoaded(true)
-  }, [feedUrl])
+  // load subscription state from storage
+  const favorites = new Map(favoritesStorage.get().map((channel) => {
+    return [channel.feedUrl, channel]
+  }))
 
   // load the channel info from the RSS feed
   const { data, error } = useSWR(() => {
@@ -84,17 +84,17 @@ export default function Channel () {
     return (<div>Loading...</div>)
   }
 
-  const channel = parseChannel(data)
+  const channel = parseChannel(feedUrl, data)
 
   function toggleSubscription (event) {
     event.preventDefault()
 
-    if (subscribed) {
-      localStorage.removeItem(feedUrl)
+    if (favorites.has(feedUrl)) {
+      favorites.delete(feedUrl)
     } else {
-      localStorage.setItem(feedUrl, JSON.stringify(channel))
+      favorites.set(feedUrl, channel)
     }
-    setSubscribed(!subscribed)
+    favoritesStorage.set(Array.from(favorites.values()))
   }
 
   return (<main>
@@ -107,9 +107,7 @@ export default function Channel () {
 
               <p className={styles.description}>{channel.description}</p>
               <form className={styles.subscribe} onSubmit={toggleSubscription}>
-              { loaded &&
-                (<button type="submit">{ subscribed ? 'Unsubscribe' : 'Subscribe'}</button>)
-              }
+              <button type="submit">{ favorites.has(feedUrl) ? 'Unsubscribe' : 'Subscribe'}</button>
               </form>
               </div>
 

@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 
 import Error from '../../../components/error'
 import itemToVideo from '../../../src/item-to-video'
+import { useRecentsStorage } from '../../../src/storage'
 
 import styles from '../../../styles/Video.module.css'
 
@@ -42,6 +43,7 @@ export default function Video () {
   const { name, title, feedUrl, id } = router.query
   const [playing, setPlaying] = useState(false)
   const videoRef = createRef()
+  const recents = useRecentsStorage()
 
   // load the channel info from the RSS feed
   const { data, error } = useSWR(() => {
@@ -71,7 +73,7 @@ export default function Video () {
     return (<Error message={error.message} />)
   }
 
-  if (!data) {
+  if (!data || !recents.ready) {
     return (<div>Loading...</div>)
   }
 
@@ -81,6 +83,11 @@ export default function Video () {
   }
 
   const video = parseVideo(data, id)
+
+  const mostRecent = recents.get().slice(-1)
+  if (mostRecent.length < 1 || mostRecent[0].id !== id) {
+    recents.set(recents.get().concat(video))
+  }
 
   return (<main className={styles.main + (playing ? ' ' + styles.playing : '')}
                 style={{
