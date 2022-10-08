@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Carousel from '../components/carousel'
 import RelLink from '../components/rel-link'
 
 import Layout from '../components/layout'
@@ -30,14 +31,6 @@ export default function Home() {
             </li>)
   })
 
-  const recentsList = recents.get().slice(-8).map((recent) => {
-    return (<li key={recent.id}>
-              <RelLink href={'/'}>
-              {recent.title}
-              </RelLink>
-            </li>)
-  }).reverse()
-
   return (<main>
             <section>
               <h1>
@@ -52,9 +45,7 @@ export default function Home() {
                   Recents
                 </h1>
 
-                <ol>
-                  { recentsList }
-                </ol>
+              <Carousel videos={Array.from(recents.get().slice(-8)).reverse()} />
               </section>
             }
           </main>)

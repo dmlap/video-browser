@@ -30,11 +30,11 @@ function findItemEl (feedDom, id) {
   throw new Error(`Failed to find item element associated with id "${id}"`)
 }
 
-function parseVideo (feedXml, id) {
+function parseVideo (channelDetail, feedXml, id) {
   const dom = new DOMParser().parseFromString(feedXml, 'application/xml')
   const item = findItemEl(dom, id)
 
-  return itemToVideo(item)
+  return itemToVideo(item, channelDetail)
 }
 
 
@@ -82,7 +82,7 @@ export default function Video () {
     setPlaying(true)
   }
 
-  const video = parseVideo(data, id)
+  const video = parseVideo({ name, title, feedUrl }, data, id)
 
   const mostRecent = recents.get().slice(-1)
   if (mostRecent.length < 1 || mostRecent[0].id !== id) {

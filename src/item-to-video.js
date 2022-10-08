@@ -1,18 +1,17 @@
-export default function itemToVideo (itemEl) {
+/**
+ * Extract the video data from an <item> in an RSS feed. The second argument contains det
+ */
+export default function itemToVideo (itemEl, channelDetail) {
   const enclosure = itemEl.querySelector('enclosure')
   const type = enclosure.attributes.type.textContent
-
-  if (!type.startsWith('video')) {
-    // filter out non-video episodes
-    return
-  }
 
   const result = {
     title: itemEl.querySelector('title').textContent,
     sources: [{
       src: enclosure.attributes.url.textContent,
-      type: type
-    }]
+      type
+    }],
+    channelDetail
   }
   result.id = result.sources[0].src
 

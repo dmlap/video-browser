@@ -3,10 +3,9 @@ import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import RelLink from '../../components/rel-link.js'
+import Carousel from '../../components/carousel'
 import Error from '../../components/error'
 import { OFFLINE } from '../../env'
-import nameToPathPart from '../../src/name-to-path-part'
 import itemToVideo from '../../src/item-to-video'
 import { useFavoritesStorage } from '../../src/storage'
 
@@ -25,15 +24,24 @@ function parseChannel (feedUrl, feedXml) {
     description: dom.querySelector('channel > description').textContent,
     image: channel.getElementsByTagNameNS(itunesNS, 'image')[0].attributes.href.textContent,
     category: channel.getElementsByTagNameNS(itunesNS, 'category')[0].attributes.text.textContent,
-    videos: []
   }
-
+  // keep videos from having cycling references to each other by
+  // splitting off channel details
+  // might be overkill but makes it less likely for mutations to
+  // propagate in weird ways
+  const channelDetail = Object.assign({}, result)
+  result.videos = []
 
   Array.from(channel.children).forEach((child) => {
     if (child.nodeName !== 'item') {
       return
     }
-    const video = itemToVideo(child)
+
+    if (!child.querySelector('enclosure[type^=video]')) {
+      // filter out non-video episodes
+      return
+    }
+    const video = itemToVideo(child, channelDetail)
     if (video) {
       result.videos.push(video)
     }
@@ -124,22 +132,7 @@ export default function Channel () {
 
             <section className={styles.list}>
               <h2>Episodes</h2>
-              <ol className={styles.videos}>
-              {
-                channel.videos.map((video, ix) => {
-                  return (<li key={ix} className={styles.videoItem}>
-                          <RelLink href={
-                            `/channel/${name}/${nameToPathPart(video.title)}`
-                              + `?feedUrl=${feedUrl}&id=${video.id}`
-                          }>
-                            <img src={video.poster}
-                                 alt="video artwork" />
-                            {video.title}
-                          </RelLink>
-                          </li>)
-                })
-              }
-              </ol>
+              <Carousel videos={channel.videos} />
             </section>
           </main>)
 }
