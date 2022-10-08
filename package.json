@@ -7,7 +7,7 @@
     "build": "next build",
     "export": "next export",
     "start": "next start",
-    "tvsim": "next build && next export && ares-launch -s 22 out",
+    "webos": "VDRA_TV=webos next build && next export && ares-launch -s 22 out",
     "lint": "next lint",
     "cypress": "cypress open"
   },

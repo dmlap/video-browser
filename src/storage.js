@@ -22,7 +22,7 @@ function useStorage (key) {
 
     localStorage.setItem(key, '[]')
     setValues(EMPTY)
-  }, [])
+  }, [key])
 
   return {
     get: () => {
