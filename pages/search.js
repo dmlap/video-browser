@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 
 import { useRouter } from 'next/router'
-import RelLink from '../components/rel-link'
+import Link from 'next/link'
 
 import Error from '../components/error'
 import styles from '../styles/Search.module.css'
@@ -42,13 +42,13 @@ export default function Search() {
     const channelUrl = `/channel/${uriCollectionName}?feedUrl=${result.feedUrl}`
 
     return (<li key={result.collectionId} className={styles.channelItem}>
-            <RelLink href={channelUrl}>
+            <Link href={channelUrl}>
               <img className={styles.artwork}
                    src={result.artworkUrl600}
                    alt={result.collectionCensoredName} />
-            </RelLink>
+            </Link>
             <div className={styles.channelDetail}>
-              <h2><RelLink href={channelUrl}>{result.collectionCensoredName}</RelLink></h2>
+              <h2><Link href={channelUrl}>{result.collectionCensoredName}</Link></h2>
               <address className="author">{result.artistName}</address>
             </div>
             </li>)

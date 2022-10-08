@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import RelLink from './rel-link'
-import { buildPath } from './rel-link'
+import Link from 'next/link'
 
 import uniqueId from '../src/uniqueId'
 
@@ -30,7 +29,7 @@ export default function Navigation (attributes) {
   function search () {
     event.preventDefault()
     if (query) {
-      router.push(`${buildPath(router)}/search?q=${encodeURIComponent(query)}`)
+      router.push(`/search?q=${encodeURIComponent(query)}`)
     }
   }
 
@@ -46,6 +45,6 @@ export default function Navigation (attributes) {
                      onChange={handleChange}
                      value={query} />
             </form>
-            <RelLink href="/" className={styles.home}>Home</RelLink>
+            <Link href="/" className={styles.home}>Home</Link>
           </nav>)
 }
