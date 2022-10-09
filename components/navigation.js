@@ -45,6 +45,6 @@ export default function Navigation (attributes) {
                      onChange={handleChange}
                      value={query} />
             </form>
-            <Link href="/" className={styles.home}>Home</Link>
+            <Link href="/"><a className={styles.home}>Home</a></Link>
           </nav>)
 }

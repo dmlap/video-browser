@@ -1,18 +1,21 @@
 .nav {
   background-color: #f5f5f5;
   color: #0c0c0c;
-  border-bottom: .1rem outset;
+  border-bottom: .1em outset;
 
   display: flex;
-  padding: .6rem 1.5rem;
+  padding: .6em 1.5em;
 }
 .back, .home {
   cursor: pointer;
   flex: 0 0 auto;
-  line-height: 1.5rem;
+  line-height: 2.2em;
 }
 .back {
-  padding-right: 1rem;
+  padding-right: 1em;
+}
+.home {
+  padding-left: 1em;
 }
 .form {
   display: flex;
@@ -20,12 +23,12 @@
 }
 .label {
   flex: 0 0 auto;
-  line-height: 1.5rem;
-  padding-right: 1rem;
+  line-height: 2.2em;
+  padding-right: 1em;
 }
 .input {
   background-color: #e5e5e5;
   border: inset;
-  flex: 1 0 10rem;
-  padding: .2rem;
+  flex: 1 0 10em;
+  padding: .25em .5em;
 }

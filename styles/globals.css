@@ -38,6 +38,9 @@ h1,h2,h3,h4,h5,h6 {
 a, a:visited, a:hover {
   color: #3b78ff;
 }
+input {
+  font-size: 1.25em;
+}
 
 p,ul,ol {
   margin-bottom: 2em;
