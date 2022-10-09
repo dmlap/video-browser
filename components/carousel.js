@@ -17,8 +17,10 @@ export default function Carousel ({ videos }) {
                               + `?feedUrl=${video.channelDetail.feedUrl}&id=${video.id}`
                           }>
                             <a>
-                              <img src={video.poster}
-                                   alt="video artwork" />
+                          <picture>
+                            { video.poster && <source srcSet={video.poster} /> }
+                            <img src="/tv-100.png" alt="video artwork" />
+                          </picture>
                               {video.title}
                             </a>
                           </Link>
