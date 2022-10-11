@@ -30,6 +30,12 @@
   font-weight: bold;
 }
 
+/* Declare font-family on '*' to reset LG's defaults. */
+* {
+  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
 html,
 body {
   color: #f2f2f2;
@@ -38,8 +44,6 @@ body {
   margin: 0;
   line-height: 1.75;
   font-size: 1.25em;
-  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6 {
