@@ -42,6 +42,7 @@ export default function Video () {
   const router = useRouter()
   const { name, title, feedUrl, id } = router.query
   const [playing, setPlaying] = useState(false)
+  const [started, setStarted] = useState(false)
   const videoRef = createRef()
   const recents = useRecentsStorage()
 
@@ -80,6 +81,13 @@ export default function Video () {
   function playVideo (event) {
     videoRef.current.play()
     setPlaying(true)
+    setStarted(true)
+  }
+  function handlePlaybackChange (event) {
+    setPlaying(!videoRef.current.paused && !videoRef.current.ended)
+  }
+  function handleBack () {
+    window.history.back()
   }
 
   const video = parseVideo({ name, title, feedUrl }, data, id)
@@ -89,14 +97,16 @@ export default function Video () {
     recents.set(recents.get().concat(video))
   }
 
-  return (<main className={styles.main + (playing ? ' ' + styles.playing : '')}
-                style={{
+  return (<main className={styles.main + (playing ? ' ' + styles.playing : '') + (started ? ' ' + styles.started : '')}
+                style={ started ? {} : {
                   backgroundImage: `radial-gradient(transparent, #0c0c0c 70%), url(${video.poster})`
                 }}>
-            <video className={styles.video}
+            <video controls
+                   className={styles.video}
                    ref={videoRef}
-                   playsInline
-                   controls>
+                   onPlay={handlePlaybackChange}
+                   onPause={handlePlaybackChange}
+                   onEnded={handlePlaybackChange}>
             {
               video.sources.map((source) => {
                 return (<source key={source.src} src={source.src} type={source.type} />)
@@ -104,9 +114,14 @@ export default function Video () {
             }
             </video>
             <div className={styles.overview}>
+              <a className={styles.back} onClick={handleBack}>&larr;</a>
               <h1 className={styles.title}>{video.title}</h1>
               { video.description && (<p>{video.description}</p>) }
-          <button onClick={playVideo} className={styles.playButton}>Play</button>
+              <button onClick={playVideo} className={styles.playButton}>Play</button>
             </div>
           </main>)
+}
+
+Video.getLayout = function (page) {
+  return (<>{page}</>)
 }

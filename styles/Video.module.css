@@ -1,3 +1,13 @@
+.back, .back:hover, .back:visited {
+  padding: 0;
+  color: #f2f2f2;
+  cursor: pointer;
+  font-size: 3em;
+  font-weight: bold;
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+}
 .main {
   height: 100vh;
   background-size: auto 100%;
@@ -15,14 +25,23 @@
   width: 100vw;
   height: 100vh;
   left: 0;
-  top: 2.2em;
-
-  padding: 0 2em;
-
-  transition: visibility 0s linear .5s, opacity .5s linear;
+  top: 0;
 }
 .video {
   opacity: 0;
+
+  transition: visibility 0s linear .5s, opacity .5s linear;
+}
+.started .video {
+  opacity: 1;
+}
+.overview {
+  padding: 4em 2em;
+
+  transition: visibility .5s linear, opacity .5s linear;
+}
+.started .overview {
+  background-image: radial-gradient(transparent, #0c0c0c 70%)
 }
 .playing .video {
   opacity: 1;

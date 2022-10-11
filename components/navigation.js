@@ -18,9 +18,6 @@ export default function Navigation (attributes) {
   function handleBack () {
     window.history.back()
   }
-  function handleForward () {
-    window.history.forward()
-  }
 
   function handleChange (event) {
     setQuery(event.target.value)
