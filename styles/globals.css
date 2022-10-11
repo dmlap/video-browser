@@ -20,6 +20,16 @@
  * | WHITE          | 242,242,242            |
  */
 
+@font-face {
+  font-family: Silkscreen;
+  src: url('../public/Silkscreen/Silkscreen-Regular.ttf');
+}
+@font-face {
+  font-family: Silkscreen;
+  src: url('../public/Silkscreen/Silkscreen-Bold.ttf');
+  font-weight: bold;
+}
+
 html,
 body {
   color: #f2f2f2;
@@ -28,7 +38,7 @@ body {
   margin: 0;
   line-height: 1.75;
   font-size: 1.25em;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
@@ -52,9 +62,9 @@ p,ul,ol {
 }
 
 /* padding on the root NextJS element so content doesn't bump the edge
-   of the viewport */
+   of the viewport or show up under the nav bar */
 body > div > * {
-  padding: 0 2rem;
+  padding: 5rem 2rem 0;
 }
 
 button {

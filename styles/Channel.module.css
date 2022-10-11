@@ -9,6 +9,9 @@
 .header h1 {
   margin: 1em 0 .5em;
 }
+.header p {
+  margin-bottom: 1em;
+}
 .video {
   padding-top: 1.5em;
   width: 100%;

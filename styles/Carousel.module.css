@@ -8,8 +8,9 @@
 }
 
 .videoItem {
-  border: .5em solid transparent;
+  border: .25em solid transparent;
   flex: 0 0 auto;
+  margin-bottom: .5em;
   padding: .5em;
   height: 15em;
   overflow: hidden;
