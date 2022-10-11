@@ -114,7 +114,7 @@ export default function Video () {
             }
             </video>
             <div className={styles.overview}>
-              <a className={styles.back} onClick={handleBack}>&larr;</a>
+              <a className={styles.back} onClick={handleBack}>&lt;</a>
               <h1 className={styles.title}>{video.title}</h1>
               { video.description && (<p>{video.description}</p>) }
               <button onClick={playVideo} className={styles.playButton}>Play</button>

@@ -31,7 +31,7 @@ export default function Navigation (attributes) {
   }
 
   return (<nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
-            <a className={styles.back} onClick={handleBack}>&larr;</a>
+          <a className={styles.back} onClick={handleBack}>&lt;</a>
             <form className={styles.form} onSubmit={search}>
               <label htmlFor={id} className={styles.label}>
                 Search:

@@ -48,7 +48,9 @@ h1,h2,h3,h4,h5,h6 {
 a, a:visited, a:hover {
   color: #3b78ff;
 }
-input {
+input, button {
+  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 1.25em;
 }
 
@@ -70,7 +72,10 @@ body > div > * {
 button {
   font-size: 1.25em;
   padding: .5em 1em;
-  border: .1em outset;
+  border: .2em outset;
+}
+button:active {
+  border-style: inset;
 }
 
 

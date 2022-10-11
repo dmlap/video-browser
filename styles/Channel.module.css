@@ -12,6 +12,28 @@
 .header p {
   margin-bottom: 1em;
 }
+
+.subscribe {
+  cursor: pointer;
+  text-align: center;
+}
+.subscribe input {
+  appearance: none;
+  cursor: pointer;
+  border: .1em solid #f2f2f2;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: .5em;
+  vertical-align: middle;
+  text-align: center;
+}
+.subscribe input:checked::before {
+  color: #13a10e;
+  content: "X";
+  width: 100%;
+  height: 100%;
+}
+
 .video {
   padding-top: 1.5em;
   width: 100%;

@@ -55,10 +55,9 @@ export default function Channel () {
   const favoritesStorage = useFavoritesStorage()
   const { name, feedUrl } = router.query
 
-  // load subscription state from storage
-  const favorites = new Map(favoritesStorage.get().map((channel) => {
-    return [channel.feedUrl, channel]
-  }))
+  const subscribed =!!favoritesStorage.get().find((channel) => {
+    return channel.feedUrl === feedUrl
+  })
 
   // load the channel info from the RSS feed
   const { data, error } = useSWR(() => {
@@ -95,14 +94,15 @@ export default function Channel () {
   const channel = parseChannel(feedUrl, data)
 
   function toggleSubscription (event) {
-    event.preventDefault()
-
-    if (favorites.has(feedUrl)) {
-      favorites.delete(feedUrl)
+    if (event.target.checked) {
+      // subscribe
+      favoritesStorage.set(favoritesStorage.get().concat(channel))
     } else {
-      favorites.set(feedUrl, channel)
+      // unsubscribe
+      favoritesStorage.set(favoritesStorage.get().filter((channel) => {
+        return channel.feedUrl !== feedUrl
+      }))
     }
-    favoritesStorage.set(Array.from(favorites.values()))
   }
 
   return (<main>
@@ -114,20 +114,24 @@ export default function Channel () {
               </header>
 
               <p className={styles.description}>{channel.description}</p>
-              <form className={styles.subscribe} onSubmit={toggleSubscription}>
-              <button type="submit">{ favorites.has(feedUrl) ? 'Unsubscribe' : 'Subscribe'}</button>
-              </form>
-              </div>
 
-              <div className={styles.player}>
-                <video className={styles.video} poster={channel.image} controls>
-                {
-                  channel.videos[0] && channel.videos[0].sources.map((source, ix) => {
-                    return (<source key={ix} src={source.src} type={source.type} />)
-                  })
-                }
-                </video>
-              </div>
+              <label className={styles.subscribe}>
+                <input onChange={toggleSubscription}
+                       checked={subscribed}
+                       type="checkbox" />
+                Subscribe
+              </label>
+            </div>
+
+            <div className={styles.player}>
+              <video className={styles.video} poster={channel.image} controls>
+              {
+                channel.videos[0] && channel.videos[0].sources.map((source, ix) => {
+                  return (<source key={ix} src={source.src} type={source.type} />)
+                })
+              }
+              </video>
+            </div>
             </section>
 
             <section className={styles.list}>
