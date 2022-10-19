@@ -1,29 +1,27 @@
-import nameToPathPart from '../src/name-to-path-part'
+import { useRouter } from 'next/router'
 
-import Link from 'next/link'
+import RelLink from '../components/rel-link'
+import { relative } from '../src/path'
 
 import styles from '../styles/Carousel.module.css'
 
 export default function Carousel ({ videos }) {
+  const router = useRouter()
+  const defaultPosterUrl = relative(router.pathname, '/tv-100.png')
 
   return (<ol className={styles.videos}>
               {
                 videos.map((video, ix) => {
-                  const name = nameToPathPart(video.channelDetail.title)
-
                   return (<li key={ix} className={styles.videoItem}>
-                          <Link href={
-                            `/channel/${name}/${nameToPathPart(video.title)}`
-                              + `?feedUrl=${video.channelDetail.feedUrl}&id=${video.id}`
+                          <RelLink href={
+                            `/video?feedUrl=${video.channelDetail.feedUrl}&id=${video.id}`
                           }>
-                            <a>
-                          <picture>
-                            { video.poster && <source srcSet={video.poster} /> }
-                            <img src="/tv-100.png" alt="video artwork" />
-                          </picture>
-                              {video.title}
-                            </a>
-                          </Link>
+                            <picture>
+                              { video.poster && <source srcSet={video.poster} /> }
+                              <img src={defaultPosterUrl} alt="video artwork" />
+                            </picture>
+                            {video.title}
+                          </RelLink>
                           </li>)
                 })
               }

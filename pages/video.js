@@ -3,11 +3,11 @@ import useSWR from 'swr'
 import { createRef, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import Error from '../../../components/error'
-import itemToVideo from '../../../src/item-to-video'
-import { useRecentsStorage } from '../../../src/storage'
+import Error from '../components/error'
+import itemToVideo from '../src/item-to-video'
+import { useRecentsStorage } from '../src/storage'
 
-import styles from '../../../styles/Video.module.css'
+import styles from '../styles/Video.module.css'
 
 const textFetcher =
       (...args) => fetch(...args).then((response) => response.text())

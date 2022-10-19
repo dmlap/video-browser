@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import Link from 'next/link'
+import RelLink from './rel-link'
 
+import { relative } from '../src/path'
 import uniqueId from '../src/uniqueId'
 
 import styles from '../styles/Navigation.module.css'
@@ -26,7 +27,18 @@ export default function Navigation (attributes) {
   function search () {
     event.preventDefault()
     if (query) {
-      router.push(`/search?q=${encodeURIComponent(query)}`)
+      const path = relative(router.pathname, `/search?q=${encodeURIComponent(query)}`)
+      // NextJS uses domain-relative URLs internally to look up
+      // resources. If `window.history` is given a domain-relative URL
+      // when running off the file:// protocol, that's interpreted as
+      // being relative to the root of the filesystem - probably not
+      // the intended behavior. Use the `as` argument to ensure
+      // `window.history` gets set with the full path, even when
+      // running off the filesystem, so that subsequent URLs are
+      // resolved from the right base path.
+      const a = document.createElement('a')
+      a.href = path
+      router.push(path, a.href)
     }
   }
 
@@ -42,6 +54,6 @@ export default function Navigation (attributes) {
                      onChange={handleChange}
                      value={query} />
             </form>
-            <Link href="/"><a className={styles.home}>Home</a></Link>
+            <RelLink href="/" className={styles.home}>Home</RelLink>
           </nav>)
 }

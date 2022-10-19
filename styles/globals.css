@@ -22,11 +22,11 @@
 
 @font-face {
   font-family: Silkscreen;
-  src: url('../public/Silkscreen/Silkscreen-Regular.ttf');
+  src: url('../public/Silkscreen-Regular.ttf');
 }
 @font-face {
   font-family: Silkscreen;
-  src: url('../public/Silkscreen/Silkscreen-Bold.ttf');
+  src: url('../public/Silkscreen-Bold.ttf');
   font-weight: bold;
 }
 

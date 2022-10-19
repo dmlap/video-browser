@@ -20,11 +20,18 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Names
-- [Terrazzo](https://en.wikipedia.org/wiki/Terrazzo): a composite material used for floor and wall treatments. Derived from mosaics (a play on Mosaic, one of the first web browsers)
-- vodcast
+## WebOS
+Quirks of developing on LG's WebOS TVs.
 
-## Learn More
+### Emulator
+"Simple" apps actually run on the `file://` protocol in the emulator. To make things even more interesting, they are run directly out of your filesystem at the path you started the emulator from. That makes domain-relative URLs weird. Instead of `/` resolving to the root of your app, it resolves to the _root of your local filesystem_. I've used `assetPrefix` and `basePrefix` in [next.config.js](next.config.js) to adjust internal paths appropriately.
+
+Simple apps operate in a less restrictive security context than a regular browser app. For instance, CORS headers are not required for cross-domain `fetch` requests in the emulator.
+
+### Real Devices
+Domain-relative URLs (e.g. `"/root-level-doc.html"`) cause the app to crash. Relative URLs are not a problem. Also, routing to the top of a directory does not automatically get resolved to `index.html`; be sure to include that explicitly if that is the intent.
+
+## NextJS
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -33,8 +40,12 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Licenses
+The Silkscreen font is available under the SIL Open Font License:
+```
+Copyright 2001 The Silkscreen Project Authors (https://github.com/googlefonts/silkscreen)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+```

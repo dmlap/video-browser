@@ -1,0 +1,68 @@
+This file patches NextJS to use relative URLs for asset loading in production mode instead of absolute ones.
+That's necessary to ensure client-side routing doesn't break on WebOS, where there is no "domain" in the execution context to resolve against.
+That is, `window.location === null`.
+To generate this diff, first make a backup copy of route-loader.js called route-loader.original.js.
+Copy `path.js` from this directory and paste it into route-loader.js right above `getFilesForRoute`.
+Then use `diff -Naur node_modules/next/dist/client/route-loader.js.original node_modules/next/dist/client/route-loader.js` to generate diff.
+Copy the output of that command into this file below this line.
+
+
+--- node_modules/next/dist/client/route-loader.js.original	2022-10-16 15:05:38.000000000 -0400
++++ node_modules/next/dist/client/route-loader.js	2022-10-18 09:07:37.000000000 -0400
+@@ -139,6 +139,34 @@
+     });
+     return resolvePromiseWithTimeout(onBuildManifest, MS_MAX_IDLE_DELAY, markAssetError(new Error('Failed to load client build manifest')));
+ }
++function relative (from, to) {
++  const froms = from.split('/')
++  const tos = to.split('/')
++
++  // find longest common path from root
++  let diffIx = 0
++  for (; diffIx < froms.length; diffIx++) {
++    if (froms[diffIx] !== tos[diffIx]) {
++      break
++    }
++  }
++
++  // add '..' for each segment in `from` to the level of the common root
++  //const fromEnd = froms.length - (froms[froms.length - 1] === '' ? 2 : 1)
++  const result = froms.slice(diffIx, froms.length - 1)
++  result.fill('..')
++
++  // add any remaining segments in `to` after subtracting the common root
++  for (let i = diffIx; i < tos.length; i++) {
++    result.push(tos[i])
++  }
++
++  if (result.length === 0 || result.length === 1 && result[0] === '') {
++    // [] or ['']
++    return '.'
++  }
++  return result.join('/')
++}
+ function getFilesForRoute(assetPrefix, route) {
+     if (process.env.NODE_ENV === 'development') {
+         const scriptUrl = assetPrefix + '/_next/static/chunks/pages' + encodeURI((0, _getAssetPathFromRoute).default(route, '.js'));
+@@ -155,10 +183,11 @@
+             throw markAssetError(new Error(`Failed to lookup route: ${route}`));
+         }
+         const allFiles = manifest[route].map((entry)=>assetPrefix + '/_next/' + encodeURI(entry));
+-        return {
+-            scripts: allFiles.filter((v)=>v.endsWith('.js')).map((v)=>(0, _trustedTypes).__unsafeCreateTrustedScriptURL(v)),
+-            css: allFiles.filter((v)=>v.endsWith('.css'))
++        const result = {
++          scripts: allFiles.filter((v)=>v.endsWith('.js')).map((v)=>(0, _trustedTypes).__unsafeCreateTrustedScriptURL(relative(__NEXT_DATA__.page, v))),
++          css: allFiles.filter((v)=>v.endsWith('.css')).map((v) => relative(__NEXT_DATA__.page, v))
+         };
++        return result
+     });
+ }
+ function createRouteLoader(assetPrefix) {
+@@ -291,4 +320,4 @@
+   module.exports = exports.default;
+ }
+ 
+-//# sourceMappingURL=route-loader.js.map
+\ No newline at end of file
++//# sourceMappingURL=route-loader.js.map

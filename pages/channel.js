@@ -3,13 +3,13 @@ import useSWR from 'swr'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
-import Carousel from '../../components/carousel'
-import Error from '../../components/error'
-import { OFFLINE } from '../../env'
-import itemToVideo from '../../src/item-to-video'
-import { useFavoritesStorage } from '../../src/storage'
+import Carousel from '../components/carousel'
+import Error from '../components/error'
+import { OFFLINE } from '../env'
+import itemToVideo from '../src/item-to-video'
+import { useFavoritesStorage } from '../src/storage'
 
-import styles from '../../styles/Channel.module.css'
+import styles from '../styles/Channel.module.css'
 
 const textFetcher =
       (...args) => fetch(...args).then((response) => response.text())

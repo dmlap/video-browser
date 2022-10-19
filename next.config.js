@@ -9,8 +9,7 @@ if (process.env.VDRA_TV === 'webos') {
   // directory so URLs starting from "/" are pointing to the wrong
   // level of the directory hierarchy. Avoid this by using relative
   // URLs.
-  nextConfig.assetPrefix = `file://${process.cwd()}/out`
-  nextConfig.basePath = process.cwd() + '/out'
+  nextConfig.assetPrefix = 'ASSETPREFIX_ME'
 }
 
 module.exports = nextConfig

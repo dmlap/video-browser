@@ -1,10 +1,9 @@
 import Head from 'next/head'
 import Carousel from '../components/carousel'
-import Link from 'next/link'
+import RelLink from '../components/rel-link'
 
 import Layout from '../components/layout'
 import { useFavoritesStorage, useRecentsStorage } from '../src/storage'
-import nameToPathPart from '../src/name-to-path-part'
 
 import styles from '../styles/Home.module.css'
 
@@ -19,15 +18,11 @@ export default function Home() {
 
   const favoriteList = favorites.get().map((favorite) => {
     return (<li key={favorite.feedUrl}>
-              <Link href={
-                '/' + [
-                  'channel',
-                  nameToPathPart(favorite.title)
-                ].join('/')
-                  + `?feedUrl=${favorite.feedUrl}`
+              <RelLink href={
+                `/channel?feedUrl=${favorite.feedUrl}`
               }>
                 {favorite.title}
-              </Link>
+              </RelLink>
             </li>)
   })
 
