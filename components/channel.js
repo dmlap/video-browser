@@ -1,10 +1,9 @@
 import useSWR from 'swr'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
 
-import Carousel from '../components/carousel'
-import Error from '../components/error'
+import Carousel from './carousel'
+import Error from './error'
 import { OFFLINE } from '../env'
 import itemToVideo from '../src/item-to-video'
 import { useFavoritesStorage } from '../src/storage'
@@ -50,10 +49,8 @@ function parseChannel (feedUrl, feedXml) {
   return result
 }
 
-export default function Channel () {
-  const router = useRouter()
+export default function Channel ({ feedUrl }) {
   const favoritesStorage = useFavoritesStorage()
-  const { name, feedUrl } = router.query
 
   const subscribed =!!favoritesStorage.get().find((channel) => {
     return channel.feedUrl === feedUrl

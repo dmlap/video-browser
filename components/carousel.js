@@ -1,27 +1,20 @@
-import { useRouter } from 'next/router'
-
-import RelLink from '../components/rel-link'
-import { relative } from '../src/path'
+import VLink from './vlink'
+import Video from './video'
 
 import styles from '../styles/Carousel.module.css'
 
 export default function Carousel ({ videos }) {
-  const router = useRouter()
-  const defaultPosterUrl = relative(router.pathname, '/tv-100.png')
-
   return (<ol className={styles.videos}>
               {
                 videos.map((video, ix) => {
                   return (<li key={ix} className={styles.videoItem}>
-                          <RelLink href={
-                            `/video?feedUrl=${video.channelDetail.feedUrl}&id=${video.id}`
-                          }>
+                          <VLink path="video" video={video}>
                             <picture>
                               { video.poster && <source srcSet={video.poster} /> }
-                              <img src={defaultPosterUrl} alt="video artwork" />
+                              <img src="tv-100.png" alt="video artwork" />
                             </picture>
                             {video.title}
-                          </RelLink>
+                          </VLink>
                           </li>)
                 })
               }

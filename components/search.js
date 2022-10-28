@@ -1,12 +1,10 @@
 import useSWR from 'swr'
 
-import { useRouter } from 'next/router'
-
-import RelLink from '../components/rel-link'
-import Error from '../components/error'
+import VLink from './vlink'
+import Channel from './channel'
+import Error from './error'
 import styles from '../styles/Search.module.css'
 
-import nameToPathPart from '../src/name-to-path-part'
 import { OFFLINE } from '../env'
 
 const SEARCH_URL = (() => {
@@ -16,11 +14,8 @@ const SEARCH_URL = (() => {
   return SEARCH_DOMAIN + '/search'
 })()
 
-export default function Search() {
-  const router = useRouter()
-  const { q } = router.query
-
-  const { data, error } = useSWR(`${SEARCH_URL}?term=${q}&entity=podcast&explicit=No`, (url) => {
+export default function Search({ query }) {
+  const { data, error } = useSWR(`${SEARCH_URL}?term=${query}&entity=podcast&explicit=No`, (url) => {
     return fetch(url + `&n=${Math.round(Math.random() * 9e8)}`).then((response) => response.json())
   })
 
@@ -37,16 +32,14 @@ export default function Search() {
   }
 
   const results = data.results.map((result) => {
-    const channelUrl = `/channel?feedUrl=${result.feedUrl}`
-
     return (<li key={result.collectionId} className={styles.channelItem}>
-            <RelLink href={channelUrl}>
+            <VLink path="channel" feedUrl={result.feedUrl}>
               <img className={styles.artwork}
                    src={result.artworkUrl600}
                    alt={result.collectionCensoredName} />
-            </RelLink>
+            </VLink>
             <div className={styles.channelDetail}>
-              <h2><RelLink href={channelUrl}>{result.collectionCensoredName}</RelLink></h2>
+              <h2><VLink path="channel" feedUrl={result.feedUrl}>{result.collectionCensoredName}</VLink></h2>
               <address className="author">{result.artistName}</address>
             </div>
             </li>)

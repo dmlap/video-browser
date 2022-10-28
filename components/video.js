@@ -1,7 +1,6 @@
 import useSWR from 'swr'
 
 import { createRef, useState } from 'react'
-import { useRouter } from 'next/router'
 
 import Error from '../components/error'
 import itemToVideo from '../src/item-to-video'
@@ -38,9 +37,8 @@ function parseVideo (channelDetail, feedXml, id) {
 }
 
 
-export default function Video () {
-  const router = useRouter()
-  const { name, title, feedUrl, id } = router.query
+export default function Video ({ video }) {
+  const { name, title, channelDetail: { feedUrl }, id } = video
   const [playing, setPlaying] = useState(false)
   const [started, setStarted] = useState(false)
   const videoRef = createRef()
@@ -74,8 +72,12 @@ export default function Video () {
     return (<Error message={error.message} />)
   }
 
-  if (!data || !recents.ready) {
-    return (<div>Loading...</div>)
+  if (!data) {
+    return (<div>Loading data...</div>)
+  }
+
+  if (!recents.ready) {
+    return (<div>Loading recents...</div>)
   }
 
   function playVideo (event) {
@@ -90,16 +92,16 @@ export default function Video () {
     window.history.back()
   }
 
-  const video = parseVideo({ name, title, feedUrl }, data, id)
+  const videoData = parseVideo({ name, title, feedUrl }, data, id)
 
   const mostRecent = recents.get().slice(-1)
   if (mostRecent.length < 1 || mostRecent[0].id !== id) {
-    recents.set(recents.get().concat(video))
+    recents.set(recents.get().concat(videoData))
   }
 
   return (<main className={styles.main + (playing ? ' ' + styles.playing : '') + (started ? ' ' + styles.started : '')}
                 style={ started ? {} : {
-                  backgroundImage: `radial-gradient(transparent, #0c0c0c 70%), url(${video.poster})`
+                  backgroundImage: `radial-gradient(transparent, #0c0c0c 70%), url(${videoData.poster})`
                 }}>
             <video controls
                    className={styles.video}
@@ -108,15 +110,15 @@ export default function Video () {
                    onPause={handlePlaybackChange}
                    onEnded={handlePlaybackChange}>
             {
-              video.sources.map((source) => {
+              videoData.sources.map((source) => {
                 return (<source key={source.src} src={source.src} type={source.type} />)
               })
             }
             </video>
             <div className={styles.overview}>
               <a className={styles.back} onClick={handleBack}>&lt;</a>
-              <h1 className={styles.title}>{video.title}</h1>
-              { video.description && (<p>{video.description}</p>) }
+              <h1 className={styles.title}>{videoData.title}</h1>
+              { videoData.description && (<p>{videoData.description}</p>) }
               <button onClick={playVideo} className={styles.playButton}>Play</button>
             </div>
           </main>)

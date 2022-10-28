@@ -8,7 +8,7 @@
     "export": "next export",
     "start": "next start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "webos": "scripts/patch-route-loader.sh ; VDRA_TV=webos next build && next export && scripts/replace-asset-prefix.sh && ares-launch -s 22 out",
+    "webos": "node scripts/build-components-map.js ; VDRA_TV=webos next build && next export && scripts/replace-asset-prefix.sh && ares-launch -s 22 out",
     "lint": "next lint",
     "cypress": "cypress open"
   },

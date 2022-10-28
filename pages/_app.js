@@ -1,12 +1,13 @@
-import Layout from '../components/layout'
+import { useState } from 'react'
+import { RouterContext } from '../components/vlink'
+
 import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
-  const getLayout = Component.getLayout || ((page) => {
-    return (<Layout>{page}</Layout>)
-  })
 
-  return getLayout(<Component {...pageProps} />)
+  return (<RouterContext path="home">
+            <Component {...pageProps} />
+          </RouterContext>)
 }
 
 export default MyApp
