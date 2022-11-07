@@ -1,4 +1,4 @@
-.videos {
+.videos, .channels {
   column-gap: .5em;
   display: flex;
   list-style: none;
@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-.videoItem {
+.item {
   border: .25em solid transparent;
   flex: 0 0 auto;
   margin-bottom: .5em;
@@ -16,10 +16,10 @@
   overflow: hidden;
   width: 11em;
 }
-.videoItem:hover, .videoItem:focus {
+.item:hover, .item:focus {
   border: .25em dotted #f2f2f2;
 }
-.videoItem img {
+.item img {
   display: block;
   object-fit: cover;
   width: 100%;
