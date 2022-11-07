@@ -1,0 +1,52 @@
+.modal {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  z-index: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  animation: .25s steps(1, jump-end) infinite frames;
+}
+
+@keyframes frames {
+  from {
+    background: url('/gray0.png') center/cover;
+  }
+
+  20% {
+    background: url('/gray1.png') center/cover;
+  }
+
+  40% {
+    background: url('/gray2.png') center/cover;
+  }
+
+  60% {
+    background: url('/gray3.png') center/cover;
+  }
+
+  80% {
+    background: url('/gray2.png') center/cover;
+  }
+
+}
+
+.message {
+  background: #0c0c0c;
+  padding: .5em;
+
+  animation: 2s step-end 0s 1 showMessage;
+}
+@keyframes showMessage {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

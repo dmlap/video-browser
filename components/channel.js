@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import Carousel from './carousel'
 import Error from './error'
+import Loading from './loading'
 import { OFFLINE } from '../env'
 import itemToVideo from '../src/item-to-video'
 import { useFavoritesStorage } from '../src/storage'
@@ -76,7 +77,7 @@ export default function Channel ({ feedUrl }) {
   }, textFetcher)
 
   if (!feedUrl) {
-    return (<div>Loading...</div>)
+    return (<Loading />)
   }
 
   if (error) {
@@ -85,7 +86,7 @@ export default function Channel ({ feedUrl }) {
   }
 
   if (!data) {
-    return (<div>Loading...</div>)
+    return (<Loading />)
   }
 
   const channel = parseChannel(feedUrl, data)

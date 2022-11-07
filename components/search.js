@@ -3,6 +3,7 @@ import useSWR from 'swr'
 import VLink from './vlink'
 import Channel from './channel'
 import Error from './error'
+import Loading from './loading'
 import styles from '../styles/Search.module.css'
 
 import { OFFLINE } from '../env'
@@ -24,7 +25,7 @@ export default function Search({ query }) {
     return (<Error message={error.message} />)
   }
   if (!data) {
-    return (<div>Loading...</div>)
+    return (<Loading />)
   }
 
   if (data.resultCount === 0) {

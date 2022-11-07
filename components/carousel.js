@@ -11,7 +11,8 @@ export default function Carousel ({ videos }) {
                           <VLink path="video" video={video}>
                             <picture>
                               { video.poster && <source srcSet={video.poster} /> }
-                              <img src="tv-100.png" alt="video artwork" />
+                              <source srcSet="gray.gif" />
+                              <img src="gray0.png" alt="video artwork" />
                             </picture>
                             {video.title}
                           </VLink>
