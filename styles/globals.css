@@ -1,23 +1,23 @@
 /**
  * Color scheme inspired by updated Windows Console Colors:
  * https://devblogs.microsoft.com/commandline/updating-the-windows-console-colors/
- * | Color Name     | New Default RGB Values |
- * | BLACK          | 12,12,12               |
- * | DARK_BLUE      | 0,55,218               |
- * | DARK_GREEN     | 19,161,14              |
- * | DARK_CYAN      | 58,150,221             |
- * | DARK_RED       | 197,15,31              |
- * | DARK_MAGENTA   | 136,23,152             |
- * | DARK_YELLOW    | 193,156,0              |
- * | DARK_WHITE     | 204,204,204            |
- * | BRIGHT_BLACK   | 118,118,118            |
- * | BRIGHT_BLUE    | 59,120,255             |
- * | BRIGHT_GREEN   | 22,198,12              |
- * | BRIGHT_CYAN    | 97,214,214             |
- * | BRIGHT_RED     | 231,72,86              |
- * | BRIGHT_MAGENTA | 180,0,158              |
- * | BRIGHT_YELLOW  | 249,241,165            |
- * | WHITE          | 242,242,242            |
+ * | Color Name     | New Default RGB Values | Hex
+ * | BLACK          | 12,12,12               | #0c0c0c
+ * | DARK_BLUE      | 0,55,218               | #0037da
+ * | DARK_GREEN     | 19,161,14              | #13a10e
+ * | DARK_CYAN      | 58,150,221             | #3a96dd
+ * | DARK_RED       | 197,15,31              | #c50f1f
+ * | DARK_MAGENTA   | 136,23,152             | #881798
+ * | DARK_YELLOW    | 193,156,0              | #c19c00
+ * | DARK_WHITE     | 204,204,204            | #cccccc
+ * | BRIGHT_BLACK   | 118,118,118            | #767676
+ * | BRIGHT_BLUE    | 59,120,255             | #3b78ff
+ * | BRIGHT_GREEN   | 22,198,12              | #16c60c
+ * | BRIGHT_CYAN    | 97,214,214             | #61d6d6
+ * | BRIGHT_RED     | 231,72,86              | #e74856
+ * | BRIGHT_MAGENTA | 180,0,158              | #b4009e
+ * | BRIGHT_YELLOW  | 249,241,165            | #f9f1a5
+ * | WHITE          | 242,242,242            | #f2f2f2
  */
 
 @font-face {
@@ -58,6 +58,55 @@ input, button {
   font-size: 1.25em;
 }
 
+/*
+  Styles for focusable elements. Arrow-key (spatial) navigation is
+  uses focus to track the current control.
+  https://stackoverflow.com/a/1600194
+*/
+a[href],
+area[href],
+input,
+select,
+textarea,
+button,
+iframe,
+[tabindex],
+[contentEditable=true] {
+  border: .25em solid transparent;
+  outline: none;
+}
+a[href]:focus, a[href]:hover,
+area[href]:focus, area[href]:hover,
+input:focus, input:hover,
+select:focus, select:hover,
+textarea:focus, textarea:hover,
+button:focus, button:hover,
+iframe:focus, iframe:hover,
+[tabindex]:focus, [tabindex]:hover,
+[contentEditable=true]:focus, [contentEditable=true]:hover {
+  border: .25em dotted #f2f2f2;
+}
+input[disabled],
+select[disabled],
+textarea[disabled],
+button[disabled] {
+  border: .25em solid transparent;
+}
+input[type=text] {
+  background-color: #e5e5e5;
+  border: .25em inset;
+}
+input[type=text]:focus, input[type=text]:hover {
+  background-color: #cccccc;
+  border: .25em inset;
+}
+button:focus {
+  border: .25em outset #767676;
+}
+button:hover {
+  border: .25em outset
+}
+
 p,ul,ol {
   margin-bottom: 2em;
   color: #f2f2f2;
@@ -76,7 +125,7 @@ body > div > * {
 button {
   font-size: 1.25em;
   padding: .5em 1em;
-  border: .2em outset;
+  border: .25em outset;
 }
 button:active {
   border-style: inset;

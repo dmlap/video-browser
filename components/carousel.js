@@ -8,7 +8,7 @@ export function ChannelCarousel ({ channels }) {
           {
             channels.map((channel) => {
               return (<li key={channel.feedUrl} className={styles.item}>
-                        <VLink path="channel" feedUrl={channel.feedUrl}>
+                        <VLink className={styles.link} path="channel" feedUrl={channel.feedUrl}>
                           <picture>
                             { channel.image && <source srcSet={channel.image} /> }
                             <source srcSet="gray.gif" />
@@ -27,7 +27,7 @@ export default function Carousel ({ videos }) {
               {
                 videos.map((video, ix) => {
                   return (<li key={ix} className={styles.item}>
-                          <VLink path="video" video={video}>
+                          <VLink className={styles.link} path="video" video={video}>
                             <picture>
                               { video.poster && <source srcSet={video.poster} /> }
                               <source srcSet="gray.gif" />

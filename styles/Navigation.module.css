@@ -4,22 +4,24 @@
   border-bottom: .1em outset;
 
   display: flex;
-  padding: .6em 1.5em;
+  padding: .6em 1.5em .5em;
+  align-items: center;
 }
 .back, .home {
-  cursor: pointer;
   flex: 0 0 auto;
   line-height: 2.2em;
+  padding: 0 1em;
 }
-.back {
-  padding-right: 1em;
+.home, .form {
+  margin-left: 1em;
 }
-.home {
-  padding-left: 1em;
+.home.home:focus, .home.home:hover {
+  border-color: #3b78ff;
 }
 .form {
   display: flex;
   flex: 1 0 auto;
+  align-items: center;
 }
 .label {
   flex: 0 0 auto;
@@ -27,8 +29,6 @@
   padding-right: 1em;
 }
 .input {
-  background-color: #e5e5e5;
-  border: inset;
   flex: 1 0 10em;
   padding: .25em .5em;
 }
