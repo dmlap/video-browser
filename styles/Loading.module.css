@@ -15,23 +15,23 @@
 
 @keyframes frames {
   from {
-    background: url('/gray0.png') center/cover;
+    background: url('/lgray0.png') center/cover;
   }
 
   20% {
-    background: url('/gray1.png') center/cover;
+    background: url('/lgray1.png') center/cover;
   }
 
   40% {
-    background: url('/gray2.png') center/cover;
+    background: url('/lgray2.png') center/cover;
   }
 
   60% {
-    background: url('/gray3.png') center/cover;
+    background: url('/lgray3.png') center/cover;
   }
 
   80% {
-    background: url('/gray2.png') center/cover;
+    background: url('/lgray2.png') center/cover;
   }
 
 }
