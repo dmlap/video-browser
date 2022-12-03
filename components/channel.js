@@ -6,49 +6,13 @@ import Carousel from './carousel'
 import Error from './error'
 import Loading from './loading'
 import { OFFLINE } from '../env'
-import itemToVideo from '../src/item-to-video'
+import parseChannel from '../src/channel'
 import { useFavoritesStorage } from '../src/storage'
 
 import styles from '../styles/Channel.module.css'
 
 const textFetcher =
       (...args) => fetch(...args).then((response) => response.text())
-
-const itunesNS = 'http://www.itunes.com/dtds/podcast-1.0.dtd'
-function parseChannel (feedUrl, feedXml) {
-  const dom = new DOMParser().parseFromString(feedXml, 'application/xml')
-  const channel = dom.querySelector('channel')
-  const result = {
-    feedUrl,
-    title: dom.querySelector('channel > title').textContent,
-    description: dom.querySelector('channel > description').textContent,
-    image: channel.getElementsByTagNameNS(itunesNS, 'image')[0].attributes.href.textContent,
-    category: channel.getElementsByTagNameNS(itunesNS, 'category')[0].attributes.text.textContent,
-  }
-  // keep videos from having cycling references to each other by
-  // splitting off channel details
-  // might be overkill but makes it less likely for mutations to
-  // propagate in weird ways
-  const channelDetail = Object.assign({}, result)
-  result.videos = []
-
-  Array.from(channel.children).forEach((child) => {
-    if (child.nodeName !== 'item') {
-      return
-    }
-
-    if (!child.querySelector('enclosure[type^=video]')) {
-      // filter out non-video episodes
-      return
-    }
-    const video = itemToVideo(child, channelDetail)
-    if (video) {
-      result.videos.push(video)
-    }
-  })
-
-  return result
-}
 
 export default function Channel ({ feedUrl }) {
   const favoritesStorage = useFavoritesStorage()
