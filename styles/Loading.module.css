@@ -1,10 +1,9 @@
-.modal {
+.modal, .nonModal {
   position: absolute;
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
-  z-index: 1;
 
   display: flex;
   justify-content: center;
@@ -12,6 +11,10 @@
 
   animation: .25s steps(1, jump-end) infinite frames;
 }
+.modal {
+  z-index: 1;
+}
+
 
 @keyframes frames {
   from {

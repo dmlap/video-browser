@@ -4,6 +4,7 @@ import VLink from './vlink'
 import Channel from './channel'
 import Error from './error'
 import Loading from './loading'
+import Layout from './layout'
 import parseChannel from '../src/channel'
 import styles from '../styles/Search.module.css'
 
@@ -90,7 +91,7 @@ export default function Search({ query }) {
     return (<Error message={error.message} />)
   }
   if (!data) {
-    return (<Loading />)
+    return (<Loading modal={false} />)
   }
 
   if (!data.results || data.results.length === 0) {
@@ -119,4 +120,8 @@ export default function Search({ query }) {
               {results}
             </ol>
           </main>)
+}
+
+Search.getLayout = function (page) {
+  return (<Layout instantSearch={true}>{page}</Layout>)
 }
