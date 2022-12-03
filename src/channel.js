@@ -41,8 +41,5 @@ export default function parseChannel (feedUrl, feedXml) {
     }
   })
 
-  if (result.videos.length) {
-    console.log('channel', result)
-  }
   return result
 }
