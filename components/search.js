@@ -105,7 +105,11 @@ export default function Search({ query }) {
                    alt={result.collectionCensoredName} />
             </VLink>
             <div className={styles.channelDetail}>
-              <h2><VLink path="channel" feedUrl={result.feedUrl}>{result.collectionCensoredName}</VLink></h2>
+              <h2>
+                <VLink path="channel" feedUrl={result.feedUrl}>
+                  {result.collectionCensoredName}
+                </VLink>
+              </h2>
               <address className="author">{result.artistName}</address>
             </div>
             </li>)
