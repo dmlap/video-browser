@@ -1,5 +1,7 @@
 /**
- * Extract the video data from an <item> in an RSS feed. The second argument contains det
+ * Extract the video data from an <item> in an RSS feed. The second
+ * argument contains metadata about the channel (i.e. RSS feed) that
+ * the itemEl is sourced from.
  */
 export default function itemToVideo (itemEl, channelDetail) {
   const enclosure = itemEl.querySelector('enclosure')

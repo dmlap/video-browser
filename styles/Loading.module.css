@@ -39,9 +39,10 @@
 
 }
 
-.message {
+.modal .message, .nonModal .message {
   background: #0c0c0c;
   padding: .5em;
+  width: 7em;
 
   animation: 2s step-end 0s 1 showMessage;
 }

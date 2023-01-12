@@ -86,12 +86,6 @@ iframe:focus, iframe:hover,
 [contentEditable=true]:focus, [contentEditable=true]:hover {
   border: .25em dotted #f2f2f2;
 }
-input[disabled],
-select[disabled],
-textarea[disabled],
-button[disabled] {
-  border: .25em solid transparent;
-}
 input[type=text] {
   background-color: #e5e5e5;
   border: .25em inset;
@@ -104,7 +98,13 @@ button:focus {
   border: .25em outset #767676;
 }
 button:hover {
-  border: .25em outset
+  border: .25em outset #767676;
+}
+input[disabled],
+select[disabled],
+textarea[disabled],
+button[disabled] {
+  border: .25em solid transparent;
 }
 
 p,ul,ol {

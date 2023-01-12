@@ -33,6 +33,7 @@
 }
 .started .video {
   opacity: 1;
+  border: .25em solid transparent;
 }
 .overview {
   padding: 4em 2em;
