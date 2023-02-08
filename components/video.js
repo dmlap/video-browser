@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import sanitizeHtml from 'sanitize-html'
 
 import {
   useId, useEffect, useRef, forwardRef, useImperativeHandle, useState
@@ -239,6 +240,8 @@ export default function Video (props) {
     window.history.back()
   }
 
+  const safeDescription = sanitizeHtml(videoData.description, { allowedTags: []})
+
   return (<main className={
     [[true, styles.main], [playing, styles.playing], [started, styles.started]].reduce((acc, [include, style]) => {
       if (include) {
@@ -259,7 +262,9 @@ export default function Video (props) {
             <div className={styles.overview}>
               <a className={styles.back} onClick={handleBack}>&lt;</a>
               <h1 className={styles.title}>{videoData.title}</h1>
-              { videoData.description && (<p>{videoData.description}</p>) }
+              { videoData.description &&
+                (<p className={styles.description}>{safeDescription}</p>)
+              }
               <button onClick={playVideo}
                       className={styles.playButton}
                       disabled={!ready}>

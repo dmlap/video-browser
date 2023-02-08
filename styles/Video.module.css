@@ -40,6 +40,14 @@
 
   transition: visibility .5s linear, opacity .5s linear;
 }
+.description {
+  max-width: 60em;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .started .overview {
   background-image: radial-gradient(transparent, #0c0c0c 70%)
 }
