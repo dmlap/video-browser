@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import sanitizeHtml from 'sanitize-html'
 
 import { useEffect, useState } from 'react'
 
@@ -67,6 +68,8 @@ export default function Channel ({ feedUrl }) {
     }
   }
 
+  const safeDescription = sanitizeHtml(channel.description, { allowedTags: [] })
+
   return (<main>
             <section className={styles.overview}>
             <div className={styles.detail}>
@@ -75,7 +78,7 @@ export default function Channel ({ feedUrl }) {
                 <p>{channel.category}</p>
               </header>
 
-              <p className={styles.description}>{channel.description}</p>
+              <p className={styles.description}>{safeDescription}</p>
 
               <label className={styles.subscribe}>
                 <input onChange={toggleSubscription}
@@ -83,16 +86,6 @@ export default function Channel ({ feedUrl }) {
                        type="checkbox" />
                 Subscribe
               </label>
-            </div>
-
-            <div className={styles.player}>
-              <video className={styles.video} poster={channel.image} controls>
-              {
-                channel.videos[0] && channel.videos[0].sources.map((source, ix) => {
-                  return (<source key={ix} src={source.src} type={source.type} />)
-                })
-              }
-              </video>
             </div>
             </section>
 

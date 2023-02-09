@@ -1,16 +1,17 @@
-.overview {
-  align-content: center;
-  display: flex;
-  column-gap: 1em;
-}
-.detail, .player {
-  flex: 1 1 50%;
-}
 .header h1 {
   margin: 1em 0 .5em;
 }
 .header p {
   margin-bottom: 1em;
+}
+
+.description {
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .subscribe {
