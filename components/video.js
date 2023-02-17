@@ -168,7 +168,6 @@ function YTPlayer (props, ref) {
 }
 YTPlayer = forwardRef(YTPlayer)
 
-
 export default function Video (props) {
   const { video } = props
   const { channelDetail: { feedUrl }, id } = video
