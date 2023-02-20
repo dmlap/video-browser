@@ -2,6 +2,7 @@ import Carousel from './carousel'
 import { ChannelCarousel } from './carousel'
 import VLink from './vlink'
 import Channel from './channel'
+import { useDNav } from './dnav'
 
 import { useFavoritesStorage, useRecentsStorage } from '../src/storage'
 
@@ -15,6 +16,8 @@ const FAVORITES_HELP =
 export default function Home() {
   const favorites = useFavoritesStorage()
   const recents = useRecentsStorage()
+
+  useDNav()
 
   return (<main>
             <section>
