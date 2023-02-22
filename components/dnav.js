@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import debounce from 'lodash/debounce'
 
 const DNavContext = createContext(() => {
   throw new Error('No enclosing DNav component')
@@ -54,6 +55,8 @@ const KEY_DIR = {
   'ArrowLeft': 'left'
 }
 
+const SCROLL_QUIET_DURATION = 250
+
 /**
  * A Component that tracks a graph between focusable elements for
  * navigation with a directional pad.
@@ -80,7 +83,6 @@ export function DNav ({ children }) {
             || graph.current.values().next().value
       start[dir].focus()
     }
-
     document.addEventListener('keydown', handleKeyDown)
 
     return () => {
@@ -88,8 +90,19 @@ export function DNav ({ children }) {
     }
   }, [])
 
+  useEffect(() => {
+    const handleScroll = debounce(update, SCROLL_QUIET_DURATION)
+
+    document.addEventListener('scroll', handleScroll)
+
+    return () => {
+      document.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
   // clear and re-populate the navigation graph
   function update () {
+    const mark = window.performance.mark('update-start')
     graph.current.clear()
 
     const centers = new Map()
@@ -106,6 +119,11 @@ export function DNav ({ children }) {
     for (const entry of centers.entries()) {
       graph.current.set(entry[0], findAdjacents(entry, centers))
     }
+
+    console.log(window.performance.measure('update', {
+      detail: graph.current.size,
+      start: 'update-start'
+    }))
   }
 
   return (<DNavContext.Provider value={update}>
@@ -115,8 +133,26 @@ export function DNav ({ children }) {
 
 export function useDNav () {
   const update = useContext(DNavContext)
+  const ref = useRef()
 
   // update the focus graph whenever a re-render is triggered for this
   // component
   useEffect(update)
+
+  // update the focus graph if the Component's scroll position changes
+  useEffect(() => {
+    const handleScroll = debounce(update, SCROLL_QUIET_DURATION)
+
+    if (!ref.current) {
+      return
+    }
+    const component = ref.current
+    component.addEventListener('scroll', handleScroll)
+
+    return () => {
+      component.removeEventListener('scroll', handleScroll)
+    }
+  }, [update, ref.current])
+
+  return ref
 }

@@ -5,6 +5,13 @@
   margin: 1.5em 0 1em;
   overflow: auto;
   padding: 0;
+
+  scroll-behavior: smooth;
+}
+
+.videos::-webkit-scrollbar, .channels::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
 }
 
 .item {
