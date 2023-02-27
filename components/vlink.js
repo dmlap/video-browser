@@ -79,7 +79,6 @@ export function useRouter () {
     length: history.length,
     push: function ({ path, pageProps }) {
       nextRouter.push('/', `#${path}`)
-      console.log('next push', path)
 
       const Component = ComponentMap.get(path)
       push(history, { path, Component, pageProps })

@@ -1,8 +1,7 @@
 .videos, .channels {
-  column-gap: .5em;
   display: flex;
   list-style: none;
-  margin: 1.5em 0 1em;
+  margin: 0;
   overflow: auto;
   padding: 0;
 
@@ -16,19 +15,28 @@
 
 .item {
   flex: 0 0 auto;
-  margin-bottom: .5em;
-  height: 15em;
   overflow: hidden;
-  width: 11em;
 }
 .link {
   padding: .5em;
   display: block;
-  height: 100%;
 }
 .item img {
   display: block;
   object-fit: cover;
-  width: 100%;
-  height: 9em;
+  /* 16:9 */
+  width: 29em;
+  height: 16.3125em;
+}
+.title {
+  font-size: 1.75rem;
+
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  width: 29rem;
+
+  text-align: center;
 }

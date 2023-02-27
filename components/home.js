@@ -20,6 +20,16 @@ export default function Home() {
   useDNav()
 
   return (<main>
+            <section className={styles.hero}>
+              <h1>{"Clarkson's Farm 2"}</h1>
+              <p>
+                Follow Jeremy Clarkson as he attempts to run a farm in
+                the countryside. With no previous farming experience,
+                Jeremy contends with the worst farming weather in
+                decades, disobedient animals, unresponsive crops, and
+                an unexpected pandemic.
+              </p>
+            </section>
             <section>
               <h1>
                 Favorites

@@ -47,7 +47,10 @@ body {
 }
 
 h1,h2,h3,h4,h5,h6 {
-  margin: 1.5em 0 1em;
+  margin: 1rem 0 .5rem;
+}
+h1 {
+  font-size: 2.125rem;
 }
 a, a:visited, a:hover {
   color: #3b78ff;

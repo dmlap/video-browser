@@ -1,19 +1,7 @@
-.container {
-  padding: 0 2rem;
+.hero {
+  height: 25rem;
+  overflow: hidden;
 }
-
-.main {
-  min-height: 100vh;
-  padding: 4rem 0;
-}
-
-.footer {
-  padding: 2rem 0;
-  border-top: thin solid #eaeaea;
-}
-
-@media (prefers-color-scheme: dark) {
-  .footer {
-    border-color: #222;
-  }
+.hero p {
+  max-width: 60rem;
 }

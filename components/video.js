@@ -259,7 +259,7 @@ export default function Video (props) {
                     onEnded={handlePlaybackChange}
                     onReady={handleReady} />
             <div className={styles.overview}>
-              <a className={styles.back} onClick={handleBack}>&lt;</a>
+              <a className={styles.back} href="" onClick={handleBack}>&lt;</a>
               <h1 className={styles.title}>{videoData.title}</h1>
               { videoData.description &&
                 (<p className={styles.description}>{safeDescription}</p>)

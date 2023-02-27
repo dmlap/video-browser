@@ -38,7 +38,7 @@ export function ChannelCarousel ({ channels }) {
                             <source srcSet="gray.gif" />
                             <img src="gray0.png" alt="channel artwork" />
                           </picture>
-                          {channel.title}
+                          <span className={styles.title}>{channel.title}</span>
                         </VLink>
                       </li>)
             })
@@ -61,7 +61,7 @@ export default function Carousel ({ videos }) {
                               <source srcSet="gray.gif" />
                               <img src="gray0.png" alt="video artwork" />
                             </picture>
-                            {video.title}
+                          <span className={styles.title}>{video.title}</span>
                           </VLink>
                           </li>)
                 })
