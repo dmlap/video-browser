@@ -16,8 +16,15 @@ function useStorage (key) {
 
     setReady(true)
     if (json) {
-      setValues(Object.freeze(JSON.parse(json)))
-      return
+      try {
+        const values = Object.freeze(JSON.parse(json))
+        setValues(values)
+        return
+      } catch (error) {
+        // log an error and then fall through to the empty storage
+        // case
+        console.log('Error retrieving from localStorage', error, json)
+      }
     }
 
     localStorage.setItem(key, '[]')

@@ -23,7 +23,7 @@ One of those tools is [the WebOS simulator](https://webostv.developer.lge.com/de
 With it installed, you can use `npm` to launch it and see the app in a more representative environment:
 
 ```bash
-npm run webos
+npm run lgsim
 ```
 
 ## Developing
@@ -32,8 +32,25 @@ It is currently supported on LG/WebOS TVs and deployed as a [basic web app](http
 That means there's no service component and all assets have to be bundled up in the package that run on a TV.
 
 The router used by `vlink` requires a map of paths to Components sourced from `components/component-map.js`.
-That file is re-generated every time you run `npm run dev` or `npm run webos`.
+That file is re-generated every time you run `npm run dev` or `npm run lgsim`.
 **If you are adding a new Component that will be a navigation target, you have to re-run one of those build targets for it to show up**
+
+### Developing On a TV
+There are a couple pre-requisites before you can try out the app on a real device.
+
+First, you need to [setup an LG developer account](https://webostv.developer.lge.com/develop/getting-started/preparing-lg-account).
+Don't make your password anything too difficult because you'll have to enter it on your TV fairly regularly.
+Then, install the [LG Developer Mode App](https://webostv.developer.lge.com/develop/getting-started/developer-mode-app) and follow the instructions on using `ares-setup-device` to connect your TV.
+Once your TV is connected, run `ares-setup-device` one more time and set your TV as the default device.
+Every few days, you'll need to go back into the Developer Mode App and re-enable development mode or you'll get cryptic errors from all of the `ares` commands.
+If you're confident you're in dev mode and you're getting errors, check that your TV's IP address hasn't changed since you set it up.
+If it has, you can use `ares-setup-device` to update it.
+
+Once all that is ready, update and launch the app:
+
+```bash
+npm run lgtv
+```
 
 ## WebOS
 Quirks of developing on LG's WebOS TVs.
