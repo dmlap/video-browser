@@ -17,34 +17,6 @@ const ITUNES_URL = (() => {
   return SEARCH_DOMAIN + '/search'
 })()
 
-/**
- * "Polyfill" for
- * [Promise.allSettled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
- * which is not available until Chrome 76.
- */
-function allSettled(promises) {
-  if (promises.length < 1) {
-    return Promise.resolve([])
-  }
-
-  const results = []
-  let done = Promise.resolve()
-  for (const promise of promises) {
-    const caughtPromise = promise.catch((error) => {
-      return { status: 'error', error }
-    })
-    caughtPromise.then((result) => {
-      results.push(result)
-    })
-    done = done.then(() => caughtPromise).catch(() => caughtPromise)
-  }
-
-  done = done.then(() => {
-    return results
-  })
-  return done
-}
-
 function fetchAndParseChannel (feedUrl) {
   return fetch(feedUrl)
     .then((response) => response.text())
@@ -68,7 +40,7 @@ function itunesFetcher (url) {
   return fetch(url + `&n=${Math.round(Math.random() * 9e8)}`)
     .then((response) => { return response.json() })
     .then((json) => {
-      return allSettled(json.results.map((result) => {
+      return Promise.allSettled(json.results.map((result) => {
         // abandon the request after 2 seconds
         return Promise.race([
           fetchAndParseChannel(result.feedUrl),
@@ -81,10 +53,8 @@ function itunesFetcher (url) {
       return {
         results: channelRequests.reduce((results, channelRequest) => {
           // make sure the feed was accessible and contained at least one video
-          if (channelRequest.status === 'resolved'
-              && channelRequest.channel.videos
-              && channelRequest.channel.videos.length > 0) {
-            return results.concat(channelRequest)
+          if (channelRequest.status === 'fulfilled' && channelRequest.value?.channel?.videos?.length > 0) {
+            return results.concat(channelRequest.value)
           }
 
           return results
@@ -111,7 +81,7 @@ function youtubeFetcher (url) {
         console.log('faking youtube json due to error', json)
         json = ytExample
       }
-      return allSettled(json.items.map((item) => {
+      return Promise.allSettled(json.items.map((item) => {
         // abandon the request after 2 seconds
         return Promise.race([
           fetchAndParseChannel(`https://www.youtube.com/feeds/videos.xml?channel_id=${item.snippet.channelId}`),
@@ -123,10 +93,8 @@ function youtubeFetcher (url) {
         return {
           results: channelRequests.reduce((results, channelRequest) => {
             // make sure the feed was accessible and contained at least one video
-            if (channelRequest.status === 'resolved'
-                && channelRequest.channel.videos
-                && channelRequest.channel.videos.length > 0) {
-              return results.concat(channelRequest)
+            if (channelRequest.status === 'fulfilled' && channelRequest.value?.channel?.videos?.length > 0) {
+              return results.concat(channelRequest.value)
             }
 
             return results
