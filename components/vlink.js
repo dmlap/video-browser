@@ -1,17 +1,19 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import NextRouter from 'next/router'
-import ComponentMap from './component-map'
+import { createContext, useContext, useEffect, useState } from 'react';
+import NextRouter from 'next/router';
+import ComponentMap from './component-map';
 
 const VRouterContext = createContext({
-  history: [{
-    path: '*invalid*',
-    Component: () => (<div>*Invalid*</div>),
-    pageProps: {}
-  }],
+  history: [
+    {
+      path: '*invalid*',
+      Component: () => <div>*Invalid*</div>,
+      pageProps: {},
+    },
+  ],
   setMain: () => {
-    throw new Error('Accessed VRouterContext outside of a VRouterContext.Provider')
-  }
-})
+    throw new Error('Accessed VRouterContext outside of a VRouterContext.Provider');
+  },
+});
 
 /**
  * A Component that sets up and provides client-side routing and
@@ -28,66 +30,66 @@ const VRouterContext = createContext({
  * (optional) children: the component tree that will have access to
  * the router context
  */
-export function RouterContext ({ path, pageProps, children }) {
-  const Component = ComponentMap.get(path)
+export function RouterContext({ path, pageProps, children }) {
+  const Component = ComponentMap.get(path);
   const [context, setContext] = useState({
-    history: [{
-      path,
-      Component,
-      pageProps
-    }],
-    push: pushEntry
-  })
-  const nextRouter = NextRouter.useRouter()
+    history: [
+      {
+        path,
+        Component,
+        pageProps,
+      },
+    ],
+    push: pushEntry,
+  });
+  const nextRouter = NextRouter.useRouter();
 
   // `history` is a parameter because the context reference captured
   // through the closure would be stale
-  function pushEntry (history, historyEntry) {
-    const update = history.concat(historyEntry)
+  function pushEntry(history, historyEntry) {
+    const update = history.concat(historyEntry);
     setContext({
       history: update,
-      push: pushEntry
-    })
-    return historyEntry
+      push: pushEntry,
+    });
+    return historyEntry;
   }
 
   useEffect(() => {
     nextRouter.beforePopState(({ url, as, options }) => {
       setContext({
         history: context.history.slice(0, -1),
-        push: context.push
-      })
-      return true
-    })
-  }, [nextRouter, context])
+        push: context.push,
+      });
+      return true;
+    });
+  }, [nextRouter, context]);
 
-  return (<VRouterContext.Provider value={context}>
-            {children}
-          </VRouterContext.Provider>)
+  return <VRouterContext.Provider value={context}>{children}</VRouterContext.Provider>;
 }
 
 /**
  * Access the router used for client-side transitions and history
  * management.
  */
-export function useRouter () {
-  const { history, push, pop } = useContext(VRouterContext)
-  const nextRouter = NextRouter.useRouter()
+export function useRouter() {
+  const { history, push, pop } = useContext(VRouterContext);
+  const nextRouter = NextRouter.useRouter();
 
   return {
     state: history.slice(-1)[0],
     length: history.length,
     push: function ({ path, pageProps }) {
-      nextRouter.push('/', `#${path}`)
+      nextRouter.push('/', `#${path}`);
 
-      const Component = ComponentMap.get(path)
-      push(history, { path, Component, pageProps })
+      const Component = ComponentMap.get(path);
+      push(history, { path, Component, pageProps });
     },
     back: function () {
       // pop(history)
-      return nextRouter.back()
-    }
-  }
+      return nextRouter.back();
+    },
+  };
 }
 
 /**
@@ -98,13 +100,16 @@ export function useRouter () {
  * path: the path to the main component for the app, relative to the
  * components directly. Like, "home" or "example/nested"
  */
-export default function VLink ({ path, className, ...props }) {
-  const router = useRouter()
+export default function VLink({ path, className, ...props }) {
+  const router = useRouter();
 
-  function handleClick (event) {
-    router.push({ path, pageProps: props })
+  function handleClick(event) {
+    router.push({ path, pageProps: props });
   }
 
-  return (<a className={className} href={`#${path}`} onClick={handleClick}>{props.children}</a>)
-
+  return (
+    <a className={className} href={`#${path}`} onClick={handleClick}>
+      {props.children}
+    </a>
+  );
 }
