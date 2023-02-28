@@ -102,7 +102,6 @@ export function DNav ({ children }) {
 
   // clear and re-populate the navigation graph
   function update () {
-    const mark = window.performance.mark('update-start')
     graph.current.clear()
 
     const centers = new Map()
@@ -119,11 +118,6 @@ export function DNav ({ children }) {
     for (const entry of centers.entries()) {
       graph.current.set(entry[0], findAdjacents(entry, centers))
     }
-
-    console.log(window.performance.measure('update', {
-      detail: graph.current.size,
-      start: 'update-start'
-    }))
   }
 
   return (<DNavContext.Provider value={update}>
