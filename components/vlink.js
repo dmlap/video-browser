@@ -88,7 +88,8 @@ export function useRouter () {
     back: function () {
       // pop(history)
       return nextRouter.back()
-    }
+    },
+    reload: nextRouter.reload
   }
 }
 

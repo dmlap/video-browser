@@ -15,9 +15,12 @@ function handleFocusFor (ref, items) {
     window.requestAnimationFrame(() => {
       // bring the left edge of the focused list item to the left edge
       // of the carousel
-      const targetLeft = event.target.getBoundingClientRect().left
-      const carouselLeft = ref.current.getBoundingClientRect().left
-      ref.current.scrollLeft += targetLeft - carouselLeft
+      const targetLeft = event.target?.getBoundingClientRect()?.left
+      const carouselLeft = ref.current?.getBoundingClientRect()?.left
+
+      if (targetLeft && carouselLeft) {
+        ref.current.scrollLeft += targetLeft - carouselLeft
+      }
     })
   }
 }

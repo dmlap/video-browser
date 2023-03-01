@@ -3,21 +3,27 @@ import debounce from 'lodash/debounce'
 
 import VLink, { useRouter } from './vlink'
 
+import { useWizardStorage } from '../src/storage'
 import styles from '../styles/Navigation.module.css'
 
 export default function Navigation (attributes) {
   const [query, setQuery] = useState(attributes.query || '')
   const router = useRouter()
   const id = useId()
+  const wizardData = useWizardStorage()
 
   function search (query) {
     if (query) {
-      router.push({ path: 'search', pageProps: { query } })
+      router.push({ path: 'home', pageProps: { query } })
     }
   }
   const debouncedSearch = useMemo(() => debounce(search, 750), [])
 
   function handleBack () {
+    if (router.state.path === 'home') {
+      wizardData.set({})
+      router.reload()
+    }
     router.back()
   }
 
@@ -41,7 +47,7 @@ export default function Navigation (attributes) {
   return (
     <nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
       <button className={styles.back} onClick={handleBack}>
-        &lt;
+        {router.state.path === 'home' ? 'Choose Category' : <>&lt;</>}
       </button>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor={id} className={styles.label}>
@@ -56,9 +62,10 @@ export default function Navigation (attributes) {
           value={query}
         />
       </form>
-      <VLink path='home' className={styles.home}>
-        Home
-      </VLink>
+      {router.state.path !== 'home' && (
+        <VLink path='home' className={styles.home}>
+          Home
+        </VLink>)}
     </nav>
   )
 }

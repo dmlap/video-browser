@@ -1,5 +1,3 @@
-import { useRouter } from 'next/router'
-
 import Carousel, { ChannelCarousel } from './carousel'
 import { useDNav } from './dnav'
 
@@ -7,33 +5,59 @@ import { useFavoritesStorage, useRecentsStorage, useWizardStorage } from '../src
 import { useITunesData } from '../pages/api/itunes'
 import { useYouTubeData } from '../pages/api/youtube'
 import Layout from '../components/layout'
+import { LoadingMessage } from '../components/loading'
+import Error from '../components/error'
+import { useRouter } from './vlink'
 
 import styles from '../styles/Home.module.css'
 
 const FAVORITES_HELP = (
-  <small>Subscribe to channels you like and they'll show up here</small>
+  <small>Subscribe to channels you like and they&apos;ll show up here</small>
 )
 
-const CATEGORIES = ['News', 'Sport', 'Comedy', 'Cars', 'JW Player']
+const CATEGORIES = ['News', 'Sport', 'Comedy', 'Cars', 'Music']
 
-function MainContent () {
+function SearchCarousel ({ response }) {
+  const { data, error } = response || {}
+
+  if (error) {
+    console.error(error)
+    return (<Error message={error.message} />)
+  }
+  if (!data) {
+    return (<LoadingMessage />)
+  }
+
+  if (!data.results || data.results.length === 0) {
+    return (<div>No results</div>)
+  }
+
+  return (
+    <ChannelCarousel channels={data.results.map((result) => {
+      return result.channel
+    })}
+    />
+  )
+}
+
+function MainContent ({ query }) {
   const recents = useRecentsStorage()
   const favorites = useFavoritesStorage()
   const wizardData = useWizardStorage()
 
-  useDNav()
+  const category = wizardData.get().category
 
-  const { data: itunes } = useITunesData(wizardData.get().category)
-  const { data: youtube } = useYouTubeData(wizardData.get().category)
+  const itunes = useITunesData(query || category)
+  const youtube = useYouTubeData(query || category)
 
   return (
     <Layout>
       <main>
         <section className={styles.hero}>
           <h1>Podcasts</h1>
-          {itunes && <ChannelCarousel channels={itunes?.results.map((result) => result.channel)} />}
+          <SearchCarousel response={itunes} />
           <h1>YouTube</h1>
-          {youtube && <ChannelCarousel channels={youtube?.results.map((result) => result.channel)} />}
+          <SearchCarousel response={youtube} />
         </section>
         <section>
           <h1>Favorites</h1>
@@ -56,8 +80,6 @@ function Wizard () {
   const router = useRouter()
   const wizardData = useWizardStorage()
 
-  useDNav()
-
   const categoryHandler = (evt) => {
     if (evt.type === 'keyup' && evt.code !== 'Enter') {
       return
@@ -66,9 +88,6 @@ function Wizard () {
     const category = evt.target.dataset.category
 
     wizardData.set({ category })
-    router.replace({
-      query: { ...router.query, category: category.toLowerCase() }
-    })
     router.reload()
   }
 
@@ -96,14 +115,16 @@ function Wizard () {
   )
 }
 
-export default function Home () {
+export default function Home ({ query }) {
   const wizardData = useWizardStorage()
 
-  if (!wizardData.get()?.category) {
+  useDNav()
+
+  if (!wizardData.get()?.category && wizardData.ready) {
     return <Wizard />
   }
 
-  return <MainContent />
+  return <MainContent query={query} />
 }
 
 Home.getLayout = function (page) {
