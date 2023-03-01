@@ -1,8 +1,10 @@
-export default function Error(attributes) {
+export default function Error (attributes) {
   return (
     <div>
       Uh oh!
-      <small>{attributes.message ? attributes.message : 'Something went wrong'}</small>
+      <small>
+        {attributes.message ? attributes.message : 'Something went wrong'}
+      </small>
     </div>
-  );
+  )
 }
