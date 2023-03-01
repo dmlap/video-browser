@@ -39,7 +39,7 @@ const data = {
       artworkUrl600:
         'https://is5-ssl.mzstatic.com/image/thumb/Podcasts113/v4/2f/54/1e/2f541ebb-5fae-b266-f44c-149260fb0467/mza_252375566174263230.jpg/600x600bb.jpg',
       genreIds: ['1318', '26', '1321', '1410'],
-      genres: ['Technology', 'Podcasts', 'Business', 'Careers'],
+      genres: ['Technology', 'Podcasts', 'Business', 'Careers']
     },
     {
       wrapperType: 'track',
@@ -77,7 +77,7 @@ const data = {
       artworkUrl600:
         'https://is2-ssl.mzstatic.com/image/thumb/Podcasts4/v4/f4/de/7f/f4de7fdc-879a-a988-7e15-f191dfc37a39/mza_2448776638727385409.png/600x600bb.jpg',
       genreIds: ['1318', '26', '1489', '1528'],
-      genres: ['Technology', 'Podcasts', 'News', 'Tech News'],
+      genres: ['Technology', 'Podcasts', 'News', 'Tech News']
     },
     {
       wrapperType: 'track',
@@ -116,7 +116,7 @@ const data = {
       artworkUrl600:
         'https://is3-ssl.mzstatic.com/image/thumb/Podcasts115/v4/3f/7f/a2/3f7fa2e5-638b-2e70-dc74-ba07519dada8/mza_12037609095679474552.jpg/600x600bb.jpg',
       genreIds: ['1318', '26', '1304'],
-      genres: ['Technology', 'Podcasts', 'Education'],
+      genres: ['Technology', 'Podcasts', 'Education']
     },
     {
       wrapperType: 'track',
@@ -154,7 +154,7 @@ const data = {
       artworkUrl600:
         'https://is1-ssl.mzstatic.com/image/thumb/Podcasts113/v4/9f/af/3f/9faf3fc9-98b8-4763-382e-dcccea5fa5c9/mza_3415071783848980264.png/600x600bb.jpg',
       genreIds: ['1318', '26', '1489', '1528'],
-      genres: ['Technology', 'Podcasts', 'News', 'Tech News'],
+      genres: ['Technology', 'Podcasts', 'News', 'Tech News']
     },
     {
       wrapperType: 'track',
@@ -192,12 +192,12 @@ const data = {
       artworkUrl600:
         'https://is4-ssl.mzstatic.com/image/thumb/Podcasts123/v4/b7/0e/af/b70eafc0-3ae1-8194-ead9-24422b49e0d0/mza_5243700989549779917.png/600x600bb.jpg',
       genreIds: ['1318', '26', '1304', '1499'],
-      genres: ['Technology', 'Podcasts', 'Education', 'How To'],
-    },
-  ],
-};
+      genres: ['Technology', 'Podcasts', 'Education', 'How To']
+    }
+  ]
+}
 
-const index = Object.create(null);
+const index = Object.create(null)
 data.results.forEach((result) => {
   const {
     collectionId,
@@ -208,8 +208,8 @@ data.results.forEach((result) => {
     artworkUrl600,
     genres,
     feedUrl,
-    kind,
-  } = result;
+    kind
+  } = result
   index[collectionId] = {
     collectionId,
     artistName,
@@ -219,8 +219,8 @@ data.results.forEach((result) => {
     artworkUrl600,
     genres,
     feedUrl,
-    kind,
-  };
-});
+    kind
+  }
+})
 
-export { data, index };
+export { data, index }
