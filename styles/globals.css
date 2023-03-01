@@ -119,12 +119,6 @@ p,ul,ol {
   box-sizing: border-box;
 }
 
-/* padding on the root NextJS element so content doesn't bump the edge
-   of the viewport or show up under the nav bar */
-body > div > * {
-  padding: 5rem 2rem 0;
-}
-
 button {
   font-size: 1.25em;
   padding: .5em 1em;

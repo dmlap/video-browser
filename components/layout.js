@@ -12,7 +12,9 @@ export default function Layout ({ children, instantSearch }) {
           </Head>
 
           <Navigation className={styles.nav} instantSearch={instantSearch} />
-          { children }
+          <main className={styles.main}>
+            { children }
+          </main>
 
           </>)
 }

@@ -4,8 +4,9 @@
   border-bottom: .1em outset;
 
   display: flex;
-  padding: .6em 1.5em .5em;
+  padding: 0 .5rem;
   align-items: center;
+  height: 5rem;
 }
 .back, .home {
   flex: 0 0 auto;

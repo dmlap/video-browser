@@ -4,11 +4,16 @@ import { useDNav } from './dnav'
 
 import styles from '../styles/Carousel.module.css'
 
-function handleFocusFor(ref, items) {
+const noop = () => {}
+function handleFocusFor(ref, items, onFocus = noop) {
   return function handleFocus (event) {
     if (!ref.current || items.length < 1) {
       return
     }
+
+    // lookup the newly active item through the data-index attribute
+    const ix = parseInt(event.target.closest('li').dataset.index, 10)
+    const item = items[ix]
 
     // overriding the scroll position during a focus event is ignored
     // (by Safari, at least)
@@ -19,19 +24,21 @@ function handleFocusFor(ref, items) {
       const targetLeft = event.target.getBoundingClientRect().left
       const carouselLeft = ref.current.getBoundingClientRect().left
       ref.current.scrollLeft += targetLeft - carouselLeft
+
+      onFocus(item)
     })
   }
 }
 
-export function ChannelCarousel ({ channels }) {
+export function ChannelCarousel ({ channels, onFocus }) {
   const ref = useDNav()
 
   return (<ol className={styles.channels}
-              onFocus={handleFocusFor(ref, channels)}
+              onFocus={handleFocusFor(ref, channels, onFocus)}
               ref={ref}>
           {
             channels.map((channel, ix) => {
-              return (<li key={ix} className={styles.item}>
+              return (<li key={ix} className={styles.item} data-index={ix}>
                         <VLink className={styles.link} path="channel" feedUrl={channel.feedUrl}>
                           <picture>
                             { channel.image && <source srcSet={channel.image} /> }
@@ -46,23 +53,23 @@ export function ChannelCarousel ({ channels }) {
           </ol>)
 }
 
-export default function Carousel ({ videos }) {
+export default function Carousel ({ videos, onFocus }) {
   const ref = useDNav()
 
   return (<ol className={styles.videos}
-              onFocus={handleFocusFor(ref, videos)}
+              onFocus={handleFocusFor(ref, videos, onFocus)}
               ref={ref}>
               {
                 videos.map((video, ix) => {
-                  return (<li key={ix} className={styles.item}>
-                          <VLink className={styles.link} path="video" video={video}>
-                            <picture>
-                              { video.poster && <source srcSet={video.poster} /> }
-                              <source srcSet="gray.gif" />
-                              <img src="gray0.png" alt="video artwork" />
-                            </picture>
-                          <span className={styles.title}>{video.title}</span>
-                          </VLink>
+                  return (<li key={ix} className={styles.item} data-index={ix}>
+                            <VLink className={styles.link} path="video" video={video}>
+                              <picture>
+                                { video.poster && <source srcSet={video.poster} /> }
+                                <source srcSet="gray.gif" />
+                                <img src="gray0.png" alt="video artwork" />
+                              </picture>
+                              <span className={styles.title}>{video.title}</span>
+                            </VLink>
                           </li>)
                 })
               }
