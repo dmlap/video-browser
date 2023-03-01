@@ -9,10 +9,12 @@ export default function itemToVideo (itemEl, channelDetail) {
 
   const result = {
     title: itemEl.querySelector('title').textContent,
-    sources: [{
-      src: enclosure.attributes.url.textContent,
-      type
-    }],
+    sources: [
+      {
+        src: enclosure.attributes.url.textContent,
+        type
+      }
+    ],
     channelDetail
   }
   result.id = result.sources[0].src

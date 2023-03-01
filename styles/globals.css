@@ -32,8 +32,8 @@
 
 /* Declare font-family on '*' to reset LG's defaults. */
 * {
-  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+    Droid Sans, Helvetica Neue, sans-serif;
 }
 
 html,
@@ -46,18 +46,26 @@ body {
   font-size: 1rem;
 }
 
-h1,h2,h3,h4,h5,h6 {
-  margin: 1rem 0 .5rem;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 1rem 0 0.5rem;
 }
 h1 {
   font-size: 2.125rem;
 }
-a, a:visited, a:hover {
+a,
+a:visited,
+a:hover {
   color: #3b78ff;
 }
-input, button {
-  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+input,
+button {
+  font-family: Silkscreen, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans,
+    Droid Sans, Helvetica Neue, sans-serif;
   font-size: 1.25em;
 }
 
@@ -74,43 +82,55 @@ textarea,
 button,
 iframe,
 [tabindex],
-[contentEditable=true] {
-  border: .25em solid transparent;
+[contentEditable='true'] {
+  border: 0.25em solid transparent;
   outline: none;
 }
-a[href]:focus, a[href]:hover,
-area[href]:focus, area[href]:hover,
-input:focus, input:hover,
-select:focus, select:hover,
-textarea:focus, textarea:hover,
-button:focus, button:hover,
-iframe:focus, iframe:hover,
-[tabindex]:focus, [tabindex]:hover,
-[contentEditable=true]:focus, [contentEditable=true]:hover {
-  border: .25em dotted #f2f2f2;
+a[href]:focus,
+a[href]:hover,
+area[href]:focus,
+area[href]:hover,
+input:focus,
+input:hover,
+select:focus,
+select:hover,
+textarea:focus,
+textarea:hover,
+button:focus,
+button:hover,
+iframe:focus,
+iframe:hover,
+[tabindex]:focus,
+[tabindex]:hover,
+[contentEditable='true']:focus,
+[contentEditable='true']:hover {
+  border: 0.25em dotted #f2f2f2;
 }
-input[type=text] {
+input[type='text'] {
   background-color: #e5e5e5;
-  border: .25em inset;
+  border: 0.25em inset;
 }
-input[type=text]:focus, input[type=text]:hover {
+input[type='text']:focus,
+input[type='text']:hover {
   background-color: #cccccc;
-  border: .25em inset;
+  border: 0.25em inset;
 }
 button:focus {
-  border: .25em outset #767676;
+  border: 0.25em outset #767676;
 }
 button:hover {
-  border: .25em outset #767676;
+  border: 0.25em outset #767676;
 }
 input[disabled],
 select[disabled],
 textarea[disabled],
 button[disabled] {
-  border: .25em solid transparent;
+  border: 0.25em solid transparent;
 }
 
-p,ul,ol {
+p,
+ul,
+ol {
   margin-bottom: 2em;
   color: #f2f2f2;
 }
@@ -127,13 +147,12 @@ body > div > * {
 
 button {
   font-size: 1.25em;
-  padding: .5em 1em;
-  border: .25em outset;
+  padding: 0.5em 1em;
+  border: 0.25em outset;
 }
 button:active {
   border-style: inset;
 }
-
 
 /* @media (prefers-color-scheme: light) { */
 /*   html { */

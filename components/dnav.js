@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef } from 'react'
 import debounce from 'lodash/debounce'
 
 const DNavContext = createContext(() => {
@@ -45,14 +45,15 @@ function findAdjacents ([element, center], centers) {
   }
 }
 
-const FOCUSABLE = 'a[href], area[href], input, select, textarea, button, '
-      + 'iframe, [tabindex], [contentEditable=true]'
+const FOCUSABLE =
+  'a[href], area[href], input, select, textarea, button, ' +
+  'iframe, [tabindex], [contentEditable=true]'
 
 const KEY_DIR = {
-  'ArrowUp': 'up',
-  'ArrowRight': 'right',
-  'ArrowDown': 'down',
-  'ArrowLeft': 'left'
+  ArrowUp: 'up',
+  ArrowRight: 'right',
+  ArrowDown: 'down',
+  ArrowLeft: 'left'
 }
 
 const SCROLL_QUIET_DURATION = 250
@@ -79,8 +80,9 @@ export function DNav ({ children }) {
       }
 
       event.preventDefault()
-      const start = graph.current.get(document.activeElement)
-            || graph.current.values().next().value
+      const start =
+        graph.current.get(document.activeElement) ||
+        graph.current.values().next().value
       start[dir].focus()
     }
     document.addEventListener('keydown', handleKeyDown)
@@ -109,8 +111,8 @@ export function DNav ({ children }) {
     for (const element of document.querySelectorAll(FOCUSABLE)) {
       const rect = element.getBoundingClientRect()
       const center = {
-        x: rect.left + window.scrollX + ((rect.right - rect.left) / 2),
-        y: rect.top + window.scrollY + ((rect.bottom - rect.top) / 2)
+        x: rect.left + window.scrollX + (rect.right - rect.left) / 2,
+        y: rect.top + window.scrollY + (rect.bottom - rect.top) / 2
       }
       centers.set(element, center)
     }
@@ -120,9 +122,7 @@ export function DNav ({ children }) {
     }
   }
 
-  return (<DNavContext.Provider value={update}>
-            {children}
-          </DNavContext.Provider>)
+  return <DNavContext.Provider value={update}>{children}</DNavContext.Provider>
 }
 
 export function useDNav () {

@@ -1,6 +1,5 @@
 import useSWR from 'swr'
 
-import VLink from './vlink'
 import { ChannelCarousel } from './carousel'
 import Error from './error'
 import { LoadingMessage } from './loading'
@@ -73,7 +72,7 @@ const YT_URL = 'https://youtube.googleapis.com/youtube/v3/search'
 function youtubeFetcher (url) {
   return fetch(url, {
     headers: {
-      'Accept': 'application/json'
+      Accept: 'application/json'
     }
   }).then((response) => { return response.json() })
     .then((json) => {
@@ -118,30 +117,33 @@ function SearchCarousel ({ response }) {
     return (<div>No results</div>)
   }
 
-  return (<ChannelCarousel channels={data.results.map((result) => {
-    return result.channel
-  })} />)
+  return (
+    <ChannelCarousel channels={data.results.map((result) => {
+      return result.channel
+    })}
+    />
+  )
 }
 
-export default function Search({ query }) {
+export default function Search ({ query }) {
   const itunes =
         useSWR(`${ITUNES_URL}?term=${query}&entity=podcast&explicit=No`,
-               itunesFetcher)
+          itunesFetcher)
   const youtube =
         useSWR(`${YT_URL}?part=snippet&maxResults=25&q=${query}&key=${YT_API_KEY}`,
-               youtubeFetcher)
+          youtubeFetcher)
 
-  return (<main>
+  return (
+    <main>
+      <h1>Podcasts</h1>
+      <SearchCarousel response={itunes} />
 
-            <h1>Podcasts</h1>
-            <SearchCarousel response={itunes} />
-
-            <h1>YouTube</h1>
-            <SearchCarousel response={youtube} />
-
-          </main>)
+      <h1>YouTube</h1>
+      <SearchCarousel response={youtube} />
+    </main>
+  )
 }
 
 Search.getLayout = function (page) {
-  return (<Layout instantSearch={true}>{page}</Layout>)
+  return (<Layout instantSearch>{page}</Layout>)
 }

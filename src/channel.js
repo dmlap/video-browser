@@ -153,9 +153,9 @@ function parseRssVideo (itemEl, channelDetail) {
 }
 
 export default function parseChannel (feedUrl, feedXml) {
-  const dom = new DOMParser().parseFromString(feedXml, 'application/xml')
+  const dom = new window.DOMParser().parseFromString(feedXml, 'application/xml')
 
-  if ((/.*\/\/www\.w3\.org\/.*\/Atom/i).test(dom.documentElement.namespaceURI)) {
+  if (/.*\/\/www\.w3\.org\/.*\/Atom/i.test(dom.documentElement.namespaceURI)) {
     return parseAtom(feedUrl, dom)
   } else {
     return parseRss(feedUrl, dom)

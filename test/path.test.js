@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals'
-import { relative } from  '../src/path'
+import { relative } from '../src/path'
 
 /*
 /a/b/c   -> /a/0     = ../0

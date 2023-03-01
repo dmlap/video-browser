@@ -20,5 +20,9 @@ export default function RelLink (props) {
     router.push(target, a.href)
   }
 
-  return (<a {...props} href={target} onClick={navigate}>{props.children}</a>)
+  return (
+    <a {...props} href={target} onClick={navigate}>
+      {props.children}
+    </a>
+  )
 }
