@@ -57,15 +57,17 @@ export default function Home() {
     setHero(result)
   }
 
-  const heroStyle = {
-    backgroundImage: 'radial-gradient(farthest-side, transparent, #0c0c0c)'
-  }
+  const heroStyle = {}
   if (hero.image) {
-    heroStyle.backgroundImage += `, url('${hero.image}')`
+    heroStyle.backgroundImage = `url('${hero.image}')`
+  } else {
+    heroStyle.backgroundImage = 'linear-gradient(315deg, hotpink, blue)'
+    heroStyle.backgroundSize = '100%'
   }
 
   return (<>
-          <section className={styles.hero} style={heroStyle}>
+            <section className={styles.hero} style={heroStyle}>
+              <div className={styles.halftone} />
               <h1>{hero.title}</h1>
               <p>{hero.description}</p>
             </section>
