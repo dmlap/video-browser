@@ -131,7 +131,7 @@ export default function Search({ query }) {
         useSWR(`${YT_URL}?part=snippet&maxResults=25&q=${query}&key=${YT_API_KEY}`,
                youtubeFetcher)
 
-  return (<main>
+  return (<>
 
             <h1>Podcasts</h1>
             <SearchCarousel response={itunes} />
@@ -139,7 +139,7 @@ export default function Search({ query }) {
             <h1>YouTube</h1>
             <SearchCarousel response={youtube} />
 
-          </main>)
+          </>)
 }
 
 Search.getLayout = function (page) {

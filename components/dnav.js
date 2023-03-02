@@ -5,7 +5,7 @@ const DNavContext = createContext(() => {
   throw new Error('No enclosing DNav component')
 })
 
-const OFF_AXIS_PENALTY = 100
+const OFF_AXIS_PENALTY = 16
 function findAdjacents ([element, center], centers) {
   function findNext (axis, reverse) {
     const offAxis = axis === 'x' ? 'y' : 'x'

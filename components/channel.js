@@ -70,7 +70,7 @@ export default function Channel ({ feedUrl }) {
 
   const safeDescription = sanitizeHtml(channel.description, { allowedTags: [] })
 
-  return (<main>
+  return (<>
             <section className={styles.overview}>
             <div className={styles.detail}>
               <header className={styles.header}>
@@ -93,5 +93,5 @@ export default function Channel ({ feedUrl }) {
               <h2>Episodes</h2>
               <Carousel videos={channel.videos} />
             </section>
-          </main>)
+          </>)
 }

@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import sanitizeHtml from 'sanitize-html'
+
 import Carousel from './carousel'
 import { ChannelCarousel } from './carousel'
 import VLink from './vlink'
@@ -16,37 +19,68 @@ const FAVORITES_HELP =
 export default function Home() {
   const favorites = useFavoritesStorage()
   const recents = useRecentsStorage()
+  const [hero, setHero] = useState({
+    title: '',
+    description: ''
+  })
 
   useDNav()
 
-  return (<main>
-            <section className={styles.hero}>
-              <h1>{"Clarkson's Farm 2"}</h1>
-              <p>
-                Follow Jeremy Clarkson as he attempts to run a farm in
-                the countryside. With no previous farming experience,
-                Jeremy contends with the worst farming weather in
-                decades, disobedient animals, unresponsive crops, and
-                an unexpected pandemic.
-              </p>
-            </section>
-            <section>
-              <h1>
-                Favorites
-              </h1>
+  function handleVideoFocus (item) {
+    const { title, description, poster } = item
+    const safeDescription = sanitizeHtml(description, { allowedTags: [] })
 
+    setHero({
+      title,
+      description: safeDescription,
+      image: poster
+    })
+  }
+  function handleChannelFocus (item) {
+    const { title, description, image } = item
+    const result = { title }
+
+    const safeDescription = sanitizeHtml(description, { allowedTags: [] })
+    result.description = safeDescription
+
+    if (image) {
+      result.image = image
+    } else {
+      const video = item.videos.find((video) => {
+        return video.poster
+      })
+      if (video) {
+        result.image = video.poster
+      }
+    }
+
+    setHero(result)
+  }
+
+  const heroStyle = {
+    backgroundImage: 'radial-gradient(farthest-side, transparent, #0c0c0c)'
+  }
+  if (hero.image) {
+    heroStyle.backgroundImage += `, url('${hero.image}')`
+  }
+
+  return (<>
+          <section className={styles.hero} style={heroStyle}>
+              <h1>{hero.title}</h1>
+              <p>{hero.description}</p>
+            </section>
+            <section className={styles.suggestions}>
+              <h1>Favorites</h1>
               { favorites.get().length ?
-                (<ChannelCarousel channels={favorites.get()} />) : FAVORITES_HELP
+                (<ChannelCarousel channels={favorites.get()} onFocus={handleChannelFocus} />) : FAVORITES_HELP
+              }
+
+              { recents.ready && !!recents.get().length &&
+                (<>
+                   <h1>Recents</h1>
+                   <Carousel videos={Array.from(recents.get().slice(-8)).reverse()} onFocus={handleVideoFocus} />
+                 </>)
               }
             </section>
-            { recents.ready && !!recents.get().length &&
-              <section>
-                <h1>
-                  Recents
-                </h1>
-
-              <Carousel videos={Array.from(recents.get().slice(-8)).reverse()} />
-              </section>
-            }
-          </main>)
+          </>)
 }

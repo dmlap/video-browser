@@ -1,7 +1,22 @@
 .hero {
-  height: 25rem;
+  height: 40%;
   overflow: hidden;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: right;
 }
 .hero p {
-  max-width: 60rem;
+  max-width: 50rem;
+}
+.suggestions {
+  height: 60%;
+  overflow: auto;
+  margin-right: -1rem;
+
+  scroll-behavior: smooth;
+}
+
+.suggestions::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
 }
