@@ -5,6 +5,7 @@ import VLink from './vlink'
 import { useRouter } from './vlink'
 
 import styles from '../styles/Navigation.module.css'
+import css from 'styled-jsx/css'
 
 export default function Navigation (attributes) {
   const [query, setQuery] = useState(attributes.query || '')
@@ -39,8 +40,15 @@ export default function Navigation (attributes) {
     return search(query)
   }
 
-  return (<nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
-          <button className={styles.back} onClick={handleBack}>&lt;</button>
+  return (
+  <nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
+          <ul className={styles.items}>
+            <li className={styles.item}><VLink path="home" className={styles.home}>Home</VLink></li>
+            <li className={styles.item}><VLink path="watchlist" className={styles.home}>Watchlist</VLink></li>
+            <li className={styles.item}><VLink path="youtube" className={styles.home}>YouTube</VLink></li>
+            <li className={styles.item}><VLink path="podcasts" className={styles.home}>Podcasts</VLink></li>
+          </ul>
+          <img className={styles.logo} width="80" height="80" src='logo-black.svg' alt='logo' />
             <form className={styles.form} onSubmit={handleSubmit}>
               <label htmlFor={id} className={styles.label}>
                 Search:
@@ -52,6 +60,5 @@ export default function Navigation (attributes) {
                      onKeyUp={handleKeyUp}
                      value={query} />
             </form>
-            <VLink path="home" className={styles.home}>Home</VLink>
           </nav>)
 }

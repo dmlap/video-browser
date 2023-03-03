@@ -1,4 +1,4 @@
-.videos, .channels {
+.videos, .channels, .list {
   display: flex;
   list-style: none;
   margin: 0;
@@ -6,6 +6,11 @@
   padding: 0;
 
   scroll-behavior: smooth;
+}
+
+.list {
+  flex-wrap: wrap; 
+  column-gap: 5%;
 }
 
 .videos::-webkit-scrollbar, .channels::-webkit-scrollbar {

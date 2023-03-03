@@ -6,7 +6,26 @@
   display: flex;
   padding: 0 .5rem;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
   height: 5rem;
+}
+.items {
+  display: flex;
+  align-items: baseline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.log {
+  fill: #0c0c0c;
+}
+.item {
+  padding: 20px 0;
+  color: #0c0c0c;
+}
+.item a {
+  text-decoration: none;
 }
 .back, .home {
   flex: 0 0 auto;
@@ -21,7 +40,6 @@
 }
 .form {
   display: flex;
-  flex: 1 0 auto;
   align-items: center;
 }
 .label {
@@ -30,6 +48,5 @@
   padding-right: 1em;
 }
 .input {
-  flex: 1 0 10em;
   padding: .25em .5em;
 }
