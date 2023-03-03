@@ -1,15 +1,13 @@
 import { useState } from 'react'
 import sanitizeHtml from 'sanitize-html'
 
-import Carousel, { ChannelCarousel } from './carousel'
+import Carousel, { ChannelCarousel, SearchCarousel } from './carousel'
 import { useDNav } from './dnav'
 
 import { useFavoritesStorage, useRecentsStorage, useWizardStorage } from '../src/storage'
 import { useITunesData } from '../pages/api/itunes'
 import { useYouTubeData } from '../pages/api/youtube'
 import Layout from '../components/layout'
-import { LoadingMessage } from '../components/loading'
-import Error from '../components/error'
 import { useRouter } from './vlink'
 
 import styles from '../styles/Home.module.css'
@@ -19,29 +17,6 @@ const FAVORITES_HELP = (
 )
 
 const CATEGORIES = ['News', 'Sport', 'Comedy', 'Cars', 'Music']
-
-function SearchCarousel ({ response }) {
-  const { data, error } = response || {}
-
-  if (error) {
-    console.error(error)
-    return (<Error message={error.message} />)
-  }
-  if (!data) {
-    return (<LoadingMessage />)
-  }
-
-  if (!data.results || data.results.length === 0) {
-    return (<div>No results</div>)
-  }
-
-  return (
-    <ChannelCarousel channels={data.results.map((result) => {
-      return result.channel
-    })}
-    />
-  )
-}
 
 function MainContent ({ query }) {
   const recents = useRecentsStorage()

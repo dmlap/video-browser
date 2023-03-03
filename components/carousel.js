@@ -2,6 +2,7 @@ import VLink from './vlink'
 import { useDNav } from './dnav'
 
 import styles from '../styles/Carousel.module.css'
+import { LoadingMessage } from './loading'
 
 const noop = () => {}
 function handleFocusFor (ref, items, onFocus = noop) {
@@ -72,21 +73,21 @@ export default function Carousel ({ videos, onFocus }) {
       ref={ref}
     >
       {
-                videos.map((video, ix) => {
-                  return (
-                    <li key={ix} className={styles.item} data-index={ix}>
-                      <VLink className={styles.link} path='video' video={video}>
-                        <picture>
-                          {video.poster && <source srcSet={video.poster} />}
-                          <source srcSet='gray.gif' />
-                          <img src='gray0.png' alt='video artwork' />
-                        </picture>
-                        <span className={styles.title}>{video.title}</span>
-                      </VLink>
-                    </li>
-                  )
-                })
-              }
+      videos.map((video, ix) => {
+        return (
+          <li key={ix} className={styles.item} data-index={ix}>
+            <VLink className={styles.link} path='video' video={video}>
+              <picture>
+                {video.poster && <source srcSet={video.poster} />}
+                <source srcSet='gray.gif' />
+                <img src='gray0.png' alt='video artwork' />
+              </picture>
+              <span className={styles.title}>{video.title}</span>
+            </VLink>
+          </li>
+        )
+      })
+    }
     </ol>
   )
 }
@@ -117,5 +118,32 @@ export function List ({ channels, onFocus }) {
             })
           }
     </ol>
+  )
+}
+
+export function SearchCarousel ({ response, isList = false }) {
+  const { data, error } = response
+  if (error) {
+    console.error(error)
+    return (<Error message={error.message} />)
+  }
+  if (!data) {
+    return (<LoadingMessage />)
+  }
+
+  if (!data.results || data.results.length === 0) {
+    return (<div>No results</div>)
+  }
+
+  const channels = data.results.map((result) => result.channel)
+
+  if (isList) {
+    return (
+      <List channels={channels} />
+    )
+  }
+
+  return (
+    <ChannelCarousel channels={channels} />
   )
 }

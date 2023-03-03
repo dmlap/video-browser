@@ -1,12 +1,7 @@
-import { useState } from 'react'
-import sanitizeHtml from 'sanitize-html'
-
 import Carousel, { ChannelCarousel } from './carousel'
 import { useDNav } from './dnav'
 
 import { useFavoritesStorage, useRecentsStorage } from '../src/storage'
-
-import styles from '../styles/Home.module.css'
 
 const FAVORITES_HELP =
       (
@@ -32,7 +27,7 @@ export default function Watchlist () {
         {recents.ready && !!recents.get().length && (
           <>
             <h1>Recents</h1>
-            <Carousel videos={Array.from(recents.get().slice(-8)).reverse()}  />
+            <Carousel videos={Array.from(recents.get().slice(-8)).reverse()} />
           </>
         )}
       </section>
