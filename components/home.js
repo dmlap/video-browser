@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import sanitizeHtml from 'sanitize-html'
 
 import Carousel from './carousel'
 import { ChannelCarousel } from './carousel'
@@ -28,20 +27,16 @@ export default function Home() {
 
   function handleVideoFocus (item) {
     const { title, description, poster } = item
-    const safeDescription = sanitizeHtml(description, { allowedTags: [] })
 
     setHero({
       title,
-      description: safeDescription,
+      description,
       image: poster
     })
   }
   function handleChannelFocus (item) {
     const { title, description, image } = item
-    const result = { title }
-
-    const safeDescription = sanitizeHtml(description, { allowedTags: [] })
-    result.description = safeDescription
+    const result = { title, description }
 
     if (image) {
       result.image = image
@@ -57,15 +52,17 @@ export default function Home() {
     setHero(result)
   }
 
-  const heroStyle = {
-    backgroundImage: 'radial-gradient(farthest-side, transparent, #0c0c0c)'
-  }
+  const heroStyle = {}
   if (hero.image) {
-    heroStyle.backgroundImage += `, url('${hero.image}')`
+    heroStyle.backgroundImage = `url('${hero.image}')`
+  } else {
+    heroStyle.backgroundImage = 'linear-gradient(315deg, hotpink, blue)'
+    heroStyle.backgroundSize = '100%'
   }
 
   return (<>
-          <section className={styles.hero} style={heroStyle}>
+            <section className={styles.hero} style={heroStyle}>
+              <div className={styles.halftone} />
               <h1>{hero.title}</h1>
               <p>{hero.description}</p>
             </section>

@@ -1,28 +1,45 @@
-function textExtractor (el, target) {
-  return (selector, propertyName) => {
-    const node = el.querySelector(selector)
-    if (node) {
-      target[propertyName] = node.textContent
-    }
+import sanitizeHtml from 'sanitize-html'
+
+/**
+ * Queries an element with a given selector and returns the text
+ * content of that element if found.
+ *
+ * @returns Array - if the selector matches a node, returns a
+ * single-element array. The element is the HTML-sanitized text
+ * content of that node. If the selector does not match anything,
+ * returns an empty array.
+ */
+function textExtractor (el, selector) {
+  const node = el.querySelector(selector)
+
+  if (node) {
+    return [node.textContent]
   }
+  return []
 }
+
+/* default options for sanitizeHtml */
+const NO_TAGS = { allowedTags: [] }
 
 function parseAtom (feedUrl, dom) {
   const result = {
     feedUrl
   }
 
-  const maybeParseText = textExtractor(dom, result)
-
-  maybeParseText('feed > title', 'title')
-  maybeParseText('feed > summary', 'description')
+  for (const title of textExtractor(dom, 'feed > title')) {
+    result.title = title
+  }
+  for (const description of textExtractor(dom, 'feed > summary')) {
+    result.description = sanitizeHtml(description, NO_TAGS)
+  }
   // try to find a channel image
   const thumbnailEl = dom.querySelector('feed > entry thumbnail')
   if (thumbnailEl) {
     result.image = thumbnailEl.attributes.url.textContent
   }
-  maybeParseText('feed > entry image', 'image')
-  maybeParseText('feed > logo', 'image')
+  for (const image of textExtractor(dom, 'feed > entry image, feed > logo')) {
+    result.image = image
+  }
 
   // keep videos from having cycling references to each other by
   // splitting off channel details
@@ -51,9 +68,10 @@ function parseAtomVideo (entryEl, channelDetail) {
     sources: [],
     channelDetail
   }
-  const maybeParseText = textExtractor(entryEl, result)
 
-  maybeParseText('title', 'title')
+  for (const title of textExtractor(entryEl, 'title')) {
+    result.title = title
+  }
   for (const content of entryEl.querySelectorAll('content')) {
     const src = content.attributes.url.textContent
     const type = content.attributes.type.textContent
@@ -62,8 +80,8 @@ function parseAtomVideo (entryEl, channelDetail) {
   }
   result.id = result.sources[0].src
 
-  maybeParseText('id', 'guid')
-  if (result.guid) {
+  for (const guid of textExtractor(entryEl, 'id')) {
+    result.guid = guid
     result.id = result.guid
   }
 
@@ -71,7 +89,9 @@ function parseAtomVideo (entryEl, channelDetail) {
   if (thumbnailEl) {
     result.poster = thumbnailEl.attributes.url.textContent
   }
-  maybeParseText('description', 'description')
+  for (const description of textExtractor(entryEl, 'description')) {
+    result.description = sanitizeHtml(description, NO_TAGS)
+  }
 
   return result
 }
@@ -82,12 +102,28 @@ function parseRss (feedUrl, dom) {
     feedUrl
   }
 
-  const maybeParseText = textExtractor(dom, result)
+  for (const title of textExtractor(dom, 'channel > title')) {
+    result.title = title
+  }
+  for (const description of textExtractor(dom, 'channel > description')) {
+    result.description = sanitizeHtml(description, NO_TAGS)
+  }
 
-  maybeParseText('channel > title', 'title')
-  maybeParseText('channel > description', 'description')
-  maybeParseText('image', 'image')
-  maybeParseText('category', 'category')
+  const imageEl = dom.querySelector('channel > image, channel > itunes\\:image')
+  if (imageEl) {
+    for (const image of textExtractor(imageEl, 'url')) {
+      // RSS-style image
+      result.image = image
+    }
+    if (imageEl.attributes.href) {
+      // iTunes-style image
+      result.image = imageEl.attributes.href.textContent
+    }
+  }
+
+  for (const category of textExtractor(dom, 'category')) {
+    result.category = category
+  }
 
   // keep videos from having cycling references to each other by
   // splitting off channel details
@@ -96,16 +132,12 @@ function parseRss (feedUrl, dom) {
   const channelDetail = Object.assign({}, result)
   result.videos = []
 
-  Array.from(channel.children).forEach((child) => {
-    if (child.nodeName !== 'item') {
-      return
-    }
-
+  for (const child of channel.querySelectorAll('item')) {
     const video = parseRssVideo(child, channelDetail)
     if (video && video.sources.length > 0) {
       result.videos.push(video)
     }
-  })
+  }
 
   return result
 }
@@ -120,25 +152,27 @@ function parseRssVideo (itemEl, channelDetail) {
     sources: [],
     channelDetail
   }
-  const maybeParseText = textExtractor(itemEl, result)
 
-  maybeParseText('title', 'title')
+  for (const title of  textExtractor(itemEl, 'title')) {
+    result.title = title
+  }
+
   for (const enclosure of itemEl.querySelectorAll('enclosure')) {
-    const src = enclosure.attributes.url.textContent
-    const type = enclosure.attributes.type.textContent
+    const src = enclosure.attributes.url?.textContent
+    const type = enclosure.attributes.type?.textContent
 
     result.sources.push({ src, type })
   }
   result.id = result.sources[0].src
 
-  maybeParseText('guid', 'guid')
-  if (result.guid) {
+  for (const guid of textExtractor(itemEl, 'guid')) {
+    result.guid = guid
     result.id = result.guid
   }
 
   // check the various ways an image might be associated with this
   // video
-  const imageEl = itemEl.querySelector('image')
+  const imageEl = itemEl.querySelector('image, itunes\\:image')
   if (imageEl) {
     result.poster = imageEl.attributes.href.textContent
   }
@@ -147,7 +181,9 @@ function parseRssVideo (itemEl, channelDetail) {
     result.poster = contentImage.attributes.url.textContent
   }
 
-  maybeParseText('description', 'description')
+  for (const description of textExtractor(itemEl, 'description')) {
+    result.description = sanitizeHtml(description, NO_TAGS)
+  }
 
   return result
 }
