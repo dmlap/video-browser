@@ -9,6 +9,7 @@ import { useITunesData } from '../pages/api/itunes'
 import { useYouTubeData } from '../pages/api/youtube'
 import Layout from '../components/layout'
 import { useRouter } from './vlink'
+import { Category } from './category'
 
 import styles from '../styles/Home.module.css'
 
@@ -22,6 +23,8 @@ function MainContent ({ query }) {
   const recents = useRecentsStorage()
   const favorites = useFavoritesStorage()
   const wizardData = useWizardStorage()
+
+  useDNav()
 
   const [hero, setHero] = useState({
     title: '',
@@ -81,6 +84,7 @@ function MainContent ({ query }) {
           <p>{hero.description}</p>
         </section>
       )}
+      <Category />
       <h1>Podcasts</h1>
       <SearchCarousel response={itunes} />
       <h1>YouTube</h1>
@@ -104,6 +108,8 @@ function MainContent ({ query }) {
 function Wizard () {
   const router = useRouter()
   const wizardData = useWizardStorage()
+
+  useDNav()
 
   const categoryHandler = (evt) => {
     if (evt.type === 'keyup' && evt.code !== 'Enter') {
@@ -143,7 +149,7 @@ function Wizard () {
 export default function Home ({ query }) {
   const wizardData = useWizardStorage()
 
-  useDNav()
+  console.log(wizardData.get())
 
   if (!wizardData.get()?.category && wizardData.ready) {
     return <Wizard />

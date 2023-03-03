@@ -15,7 +15,6 @@
 
   scroll-behavior: smooth;
 }
-
 .suggestions::-webkit-scrollbar {
   display: none;
   scrollbar-width: none;

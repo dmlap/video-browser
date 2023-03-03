@@ -3,6 +3,7 @@ import { useDNav } from './dnav'
 
 import styles from '../styles/Carousel.module.css'
 import { LoadingMessage } from './loading'
+import { Error } from './error'
 
 const noop = () => {}
 function handleFocusFor (ref, items, onFocus = noop) {
@@ -49,7 +50,7 @@ export function ChannelCarousel ({ channels, onFocus }) {
                 <li key={ix} className={styles.item} data-index={ix}>
                   <VLink className={styles.link} path='channel' feedUrl={channel.feedUrl}>
                     <picture>
-                      {channel.image && <source srcSet={channel.image} />}
+                      {channel.video && <source srcSet={channel.video} />}
                       <source srcSet='gray.gif' />
                       <img src='gray0.png' alt='channel artwork' />
                     </picture>

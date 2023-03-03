@@ -4,27 +4,30 @@ import debounce from 'lodash/debounce'
 import VLink, { useRouter } from './vlink'
 
 import styles from '../styles/Navigation.module.css'
+import { useWizardStorage } from '../src/storage'
+
+const SEARCH_PATHS = ['youtube', 'podcasts', 'home']
 
 export default function Navigation (attributes) {
-  const [query, setQuery] = useState(attributes.query || '')
+  const category = useWizardStorage().get()?.category
   const router = useRouter()
+
+  const [query, setQuery] = useState(router.state.pageProps?.query || category || '')
+
   const id = useId()
-  // const wizardData = useWizardStorage()
+
+  console.log(router.state)
 
   function search (query) {
     if (query) {
-      router.push({ path: 'home', pageProps: { query } })
+      const routerPath = router.state.path
+      const path = SEARCH_PATHS.includes(router.state.path) ? routerPath : 'home'
+
+      router.push({ path, pageProps: { query }, query })
     }
   }
-  const debouncedSearch = useMemo(() => debounce(search, 750), [])
 
-  // function handleBack () {
-  //   if (router.state.path === 'home') {
-  //     wizardData.set({})
-  //     router.reload()
-  //   }
-  //   router.back()
-  // }
+  const debouncedSearch = useMemo(() => debounce(search, 750), [router.state.path])
 
   function handleChange (event) {
     setQuery(event.target.value)
@@ -46,10 +49,10 @@ export default function Navigation (attributes) {
   return (
     <nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
       <ul className={styles.items}>
-        <li className={styles.item}><VLink path='home' className={styles.home}>Home</VLink></li>
-        <li className={styles.item}><VLink path='watchlist' className={styles.home}>Watchlist</VLink></li>
-        <li className={styles.item}><VLink path='youtube' className={styles.home}>YouTube</VLink></li>
-        <li className={styles.item}><VLink path='podcasts' className={styles.home}>Podcasts</VLink></li>
+        <li className={styles.item}><VLink path='home' query={query} className={styles.home}>Home</VLink></li>
+        <li className={styles.item}><VLink path='watchlist' query={query} className={styles.home}>Watchlist</VLink></li>
+        <li className={styles.item}><VLink path='youtube' query={query} className={styles.home}>YouTube</VLink></li>
+        <li className={styles.item}><VLink path='podcasts' query={query} className={styles.home}>Podcasts</VLink></li>
       </ul>
       <img className={styles.logo} width='80' height='80' src='logo-black.svg' alt='logo' />
       <form className={styles.form} onSubmit={handleSubmit}>

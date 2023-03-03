@@ -79,8 +79,8 @@ export function useRouter () {
   return {
     state: history.slice(-1)[0],
     length: history.length,
-    push: function ({ path, pageProps }) {
-      nextRouter.push('/', `#${path}`)
+    push: function ({ path, pageProps, query }) {
+      nextRouter.push('/', `#${path}${query ? `?query=${query}` : ''}`)
 
       const Component = ComponentMap.get(path)
       push(history, { path, Component, pageProps })
