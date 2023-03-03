@@ -73,6 +73,12 @@ export function DNav ({ children }) {
         return
       }
 
+      console.log(event);
+
+      if (event.keyCode === 461) {
+          console.log("Back key pressed");
+      }
+
       const dir = KEY_DIR[event.key]
       if (!dir) {
         // abort non-directional key presses

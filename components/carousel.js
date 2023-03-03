@@ -90,3 +90,32 @@ export default function Carousel ({ videos, onFocus }) {
     </ol>
   )
 }
+
+export function List ({ channels, onFocus }) {
+  const ref = useDNav()
+
+  return (
+    <ol
+      className={styles.list}
+      onFocus={handleFocusFor(ref, channels, onFocus)}
+      ref={ref}
+    >
+      {
+            channels.map((channel, ix) => {
+              return (
+                <li key={ix} className={styles.item} data-index={ix}>
+                  <VLink className={styles.link} path='channel' feedUrl={channel.feedUrl}>
+                    <picture>
+                      {channel.image && <source srcSet={channel.image} />}
+                      <source srcSet='gray.gif' />
+                      <img src='gray0.png' alt='channel artwork' />
+                    </picture>
+                    <span className={styles.title}>{channel.title}</span>
+                  </VLink>
+                </li>
+              )
+            })
+          }
+    </ol>
+  )
+}

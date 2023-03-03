@@ -3,14 +3,13 @@ import debounce from 'lodash/debounce'
 
 import VLink, { useRouter } from './vlink'
 
-import { useWizardStorage } from '../src/storage'
 import styles from '../styles/Navigation.module.css'
 
 export default function Navigation (attributes) {
   const [query, setQuery] = useState(attributes.query || '')
   const router = useRouter()
   const id = useId()
-  const wizardData = useWizardStorage()
+  // const wizardData = useWizardStorage()
 
   function search (query) {
     if (query) {
@@ -19,13 +18,13 @@ export default function Navigation (attributes) {
   }
   const debouncedSearch = useMemo(() => debounce(search, 750), [])
 
-  function handleBack () {
-    if (router.state.path === 'home') {
-      wizardData.set({})
-      router.reload()
-    }
-    router.back()
-  }
+  // function handleBack () {
+  //   if (router.state.path === 'home') {
+  //     wizardData.set({})
+  //     router.reload()
+  //   }
+  //   router.back()
+  // }
 
   function handleChange (event) {
     setQuery(event.target.value)
@@ -46,9 +45,13 @@ export default function Navigation (attributes) {
 
   return (
     <nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
-      <button className={styles.back} onClick={handleBack}>
-        {router.state.path === 'home' ? 'Choose Category' : <>&lt;</>}
-      </button>
+      <ul className={styles.items}>
+        <li className={styles.item}><VLink path='home' className={styles.home}>Home</VLink></li>
+        <li className={styles.item}><VLink path='watchlist' className={styles.home}>Watchlist</VLink></li>
+        <li className={styles.item}><VLink path='youtube' className={styles.home}>YouTube</VLink></li>
+        <li className={styles.item}><VLink path='podcasts' className={styles.home}>Podcasts</VLink></li>
+      </ul>
+      <img className={styles.logo} width='80' height='80' src='logo-black.svg' alt='logo' />
       <form className={styles.form} onSubmit={handleSubmit}>
         <label htmlFor={id} className={styles.label}>
           Search:
@@ -62,10 +65,6 @@ export default function Navigation (attributes) {
           value={query}
         />
       </form>
-      {router.state.path !== 'home' && (
-        <VLink path='home' className={styles.home}>
-          Home
-        </VLink>)}
     </nav>
   )
 }

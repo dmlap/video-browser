@@ -68,6 +68,7 @@ function MainContent ({ query }) {
       image: poster
     })
   }
+
   function handleChannelFocus (item) {
     const { title, description, image } = item
     const result = { title }
@@ -92,16 +93,19 @@ function MainContent ({ query }) {
   const heroStyle = {
     backgroundImage: 'radial-gradient(farthest-side, transparent, #0c0c0c)'
   }
+
   if (hero.image) {
     heroStyle.backgroundImage += `, url('${hero.image}')`
   }
 
   return (
     <Layout>
-      <section className={styles.hero} style={heroStyle}>
-        <h1>{hero.title}</h1>
-        <p>{hero.description}</p>
-      </section>
+      {hero?.title && (
+        <section className={styles.hero} style={heroStyle}>
+          <h1>{hero.title}</h1>
+          <p>{hero.description}</p>
+        </section>
+      )}
       <h1>Podcasts</h1>
       <SearchCarousel response={itunes} />
       <h1>YouTube</h1>

@@ -9,8 +9,12 @@
   scroll-behavior: smooth;
 }
 
-.videos::-webkit-scrollbar,
-.channels::-webkit-scrollbar {
+.list {
+  flex-wrap: wrap; 
+  column-gap: 5%;
+}
+
+.videos::-webkit-scrollbar, .channels::-webkit-scrollbar {
   display: none;
   scrollbar-width: none;
 }

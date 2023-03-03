@@ -9,7 +9,7 @@ export default function Layout ({ children, instantSearch }) {
     <>
       <Head>
         <title>Video Browser</title>
-        <link rel='shortcut icon' href='/logo.svg' />
+        <link rel='shortcut icon' href='/logo-white.svg' />
         <meta name='description' content="A browser for all the world's video" />
       </Head>
 
