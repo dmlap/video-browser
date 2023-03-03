@@ -1,9 +1,10 @@
-.back, .back:hover, .back:visited {
+.back,
+.back:hover,
+.back:visited {
   padding: 0;
   cursor: pointer;
   font-size: 3em;
   font-weight: bold;
-  position: absolute;
   top: 2rem;
   left: 2rem;
 }
@@ -19,7 +20,8 @@
   width: 50%;
 }
 
-.video, .overview {
+.video,
+.overview {
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -29,16 +31,16 @@
 .video {
   opacity: 0;
 
-  transition: visibility 0s linear .5s, opacity .5s linear;
+  transition: visibility 0s linear 0.5s, opacity 0.5s linear;
 }
 .started .video {
   opacity: 1;
-  border: .25em solid transparent;
+  border: 0.25em solid transparent;
 }
 .overview {
   padding: 4em 2em;
 
-  transition: visibility .5s linear, opacity .5s linear;
+  transition: visibility 0.5s linear, opacity 0.5s linear;
 }
 .description {
   max-width: 60em;
@@ -49,7 +51,7 @@
   text-overflow: ellipsis;
 }
 .started .overview {
-  background-image: radial-gradient(transparent, #0c0c0c 70%)
+  background-image: radial-gradient(transparent, #0c0c0c 70%);
 }
 .playing .video {
   opacity: 1;

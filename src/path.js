@@ -11,7 +11,7 @@ export function relative (from, to) {
   }
 
   // add '..' for each segment in `from` to the level of the common root
-  //const fromEnd = froms.length - (froms[froms.length - 1] === '' ? 2 : 1)
+  // const fromEnd = froms.length - (froms[froms.length - 1] === '' ? 2 : 1)
   const result = froms.slice(diffIx, froms.length - 1)
   result.fill('..')
 
@@ -20,7 +20,7 @@ export function relative (from, to) {
     result.push(tos[i])
   }
 
-  if (result.length === 0 || result.length === 1 && result[0] === '') {
+  if (result.length === 0 || (result.length === 1 && result[0] === '')) {
     // [] or ['']
     return '.'
   }

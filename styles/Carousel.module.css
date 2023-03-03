@@ -1,4 +1,5 @@
-.videos, .channels {
+.videos,
+.channels {
   display: flex;
   list-style: none;
   margin: 0;
@@ -6,6 +7,13 @@
   padding: 0;
 
   scroll-behavior: smooth;
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; 
+  column-gap: 5%;
 }
 
 .videos::-webkit-scrollbar, .channels::-webkit-scrollbar {
@@ -18,7 +26,7 @@
   overflow: hidden;
 }
 .link {
-  padding: .5em;
+  padding: 0.5em;
   display: block;
 }
 .item img {

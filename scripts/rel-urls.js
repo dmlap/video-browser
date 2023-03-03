@@ -14,8 +14,11 @@ if (!inputFile) {
   process.exit(1)
 }
 
-const inputDepth = inputFile.match(/\//g).length
-const pathToRoot = inputFile.match(/\//g).slice(0, -1).map((path) => '..').join('/')
+const pathToRoot = inputFile
+  .match(/\//g)
+  .slice(0, -1)
+  .map((path) => '..')
+  .join('/')
 console.log(`Processing '${inputFile}' with relative path '${pathToRoot}'`)
 
 if (!NextConfig.assetPrefix) {
@@ -25,7 +28,6 @@ if (!NextConfig.assetPrefix) {
 const prefix = RegExp(NextConfig.assetPrefix + '(/)?', 'g')
 
 const replacement = pathToRoot.length > 0 ? pathToRoot + '/' : pathToRoot
-const replaced = fs.readFileSync(inputFile, 'utf8')
-      .replace(prefix, replacement)
+const replaced = fs.readFileSync(inputFile, 'utf8').replace(prefix, replacement)
 
 fs.writeFileSync(inputFile, replaced)

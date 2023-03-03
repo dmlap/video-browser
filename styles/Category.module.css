@@ -1,0 +1,9 @@
+.category {
+  padding: 1rem 0;
+  column-gap: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin: 0 auto;
+  width: fit-content;
+}

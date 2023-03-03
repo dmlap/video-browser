@@ -1,0 +1,6 @@
+# Modules
+node_modules/
+.next/
+out/
+*.md
+public/

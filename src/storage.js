@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react'
 
-const EMPTY = Object.freeze([])
+const EMPTY = {
+  WATCH_HISTORY: Object.freeze([]),
+  PREFERENCE: Object.freeze({})
+}
 
 /**
  * Accepts a key String and returns a storage object to persist and
  * retrieve data. Objects are stored in localStorage and will persist
  * beyond the page load or browsing session.
  */
-function useStorage (key) {
+
+function useStorage (key, empty) {
   const [ready, setReady] = useState(false)
-  const [values, setValues] = useState(EMPTY)
+  const [values, setValues] = useState(empty)
 
   useEffect(() => {
-    const json = localStorage.getItem(key)
+    const json = window.localStorage.getItem(key)
 
     setReady(true)
     if (json) {
@@ -27,9 +31,9 @@ function useStorage (key) {
       }
     }
 
-    localStorage.setItem(key, '[]')
-    setValues(EMPTY)
-  }, [key])
+    window.localStorage.setItem(key, Array.isArray(empty) ? '[]' : '{}')
+    setValues(empty)
+  }, [key, empty])
 
   return {
     get: () => {
@@ -39,19 +43,23 @@ function useStorage (key) {
     ready,
 
     set: (newValues) => {
-      const frozen = Object.freeze(Array.from(newValues))
-      localStorage.setItem(key, JSON.stringify(frozen))
+      const frozen = Object.freeze(newValues)
+      window.localStorage.setItem(key, JSON.stringify(frozen))
       setValues(frozen)
     }
   }
 }
 
 function useFavoritesStorage () {
-  return useStorage('favorites')
+  return useStorage('favorites', EMPTY.WATCH_HISTORY)
 }
 
 function useRecentsStorage () {
-  return useStorage('recents')
+  return useStorage('recents', EMPTY.WATCH_HISTORY)
 }
 
-export { useFavoritesStorage, useRecentsStorage }
+function useWizardStorage () {
+  return useStorage('preference', EMPTY.PREFERENCE)
+}
+
+export { useFavoritesStorage, useRecentsStorage, useWizardStorage }

@@ -1,9 +1,7 @@
 import useSWR from 'swr'
 import sanitizeHtml from 'sanitize-html'
 
-import {
-  useId, useEffect, useRef, forwardRef, useImperativeHandle, useState
-} from 'react'
+import { useId, useEffect, useRef, forwardRef, useImperativeHandle, useState } from 'react'
 import Script from 'next/script'
 
 import Error from '../components/error'
@@ -12,8 +10,7 @@ import { useRecentsStorage } from '../src/storage'
 
 import styles from '../styles/Video.module.css'
 
-const textFetcher =
-      (...args) => fetch(...args).then((response) => response.text())
+const textFetcher = (...args) => fetch(...args).then((response) => response.text())
 
 function findVideo (channel, id) {
   for (const video of channel.videos) {
@@ -28,13 +25,13 @@ function findVideo (channel, id) {
  * video or a third-party implementation.
  */
 function Player (props, ref) {
-  if ((/^https?:\/\/www\.youtube.com/ig).test(props.video.channelDetail.feedUrl)) {
-    return (<YTPlayer ref={ref} {...props} />)
+  if (/^https?:\/\/www\.youtube.com/gi.test(props.video.channelDetail.feedUrl)) {
+    return <YTPlayerRef ref={ref} {...props} />
   } else {
-    return (<HTMLPlayer ref={ref} {...props} />)
+    return <HTMLPlayerRef ref={ref} {...props} />
   }
 }
-Player = forwardRef(Player)
+const PlayerRef = forwardRef(Player)
 
 /**
  * HTML Video Element video player component.
@@ -42,17 +39,21 @@ Player = forwardRef(Player)
 function HTMLPlayer ({ onEnded, onPlay, onPause, onReady, video }, ref) {
   const videoRef = useRef()
 
-  useImperativeHandle(ref, () => ({
-    play() {
-      return videoRef.current.play()
-    },
-    paused() {
-      return videoRef.current.paused
-    },
-    ended() {
-      return videoRef.current.ended
-    }
-  }), [videoRef])
+  useImperativeHandle(
+    ref,
+    () => ({
+      play () {
+        return videoRef.current.play()
+      },
+      paused () {
+        return videoRef.current.paused
+      },
+      ended () {
+        return videoRef.current.ended
+      }
+    }),
+    [videoRef]
+  )
 
   useEffect(() => {
     // the video element is ready for interaction immediately after
@@ -60,20 +61,15 @@ function HTMLPlayer ({ onEnded, onPlay, onPause, onReady, video }, ref) {
     onReady()
   }, [])
 
-  return (<video controls
-                 className={styles.video}
-                 ref={videoRef}
-                 onPlay={onPlay}
-                 onPause={onPause}
-                 onEnded={onEnded}>
-          {
-            video.sources.map((source) => {
-              return (<source key={source.src} src={source.src} type={source.type} />)
-            })
-          }
-          </video>)
+  return (
+    <video controls className={styles.video} ref={videoRef} onPlay={onPlay} onPause={onPause} onEnded={onEnded}>
+      {video.sources.map((source) => {
+        return <source key={source.src} src={source.src} type={source.type} />
+      })}
+    </video>
+  )
 }
-HTMLPlayer = forwardRef(HTMLPlayer)
+const HTMLPlayerRef = forwardRef(HTMLPlayer)
 
 /**
  * YouTube IFrame API-based video player component.
@@ -85,23 +81,27 @@ function YTPlayer (props, ref) {
   const [error, setError] = useState(0)
   const { video } = props
 
-  useImperativeHandle(ref, () => {
-    return {
-      play() {
-        return playerRef.current.playVideo()
-      },
-      paused() {
-        const state = playerRef.current.getPlayerState()
-        return state < 1 || state === 2 || state === 5
-      },
-      ended() {
-        return playerRef.current.getPlayerState() === 0
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        play () {
+          return playerRef.current.playVideo()
+        },
+        paused () {
+          const state = playerRef.current.getPlayerState()
+          return state < 1 || state === 2 || state === 5
+        },
+        ended () {
+          return playerRef.current.getPlayerState() === 0
+        }
       }
-    }
-  }, [id, playerRef])
+    },
+    [id, playerRef]
+  )
 
   function setupAPI (id, playerRef) {
-    const player = new YT.Player(id, {
+    const player = new window.YT.Player(id, {
       // see https://developers.google.com/youtube/iframe_api_reference#Events
       events: {
         onReady () {
@@ -110,15 +110,15 @@ function YTPlayer (props, ref) {
         },
         onStateChange (event) {
           switch (event.data) {
-          case 0: // ended
-            props.onEnded(event)
-            break
-          case 1: // playing
-            props.onPlay(event)
-            break
-          case 2: // paused
-            props.onPause(event)
-            break;
+            case 0: // ended
+              props.onEnded(event)
+              break
+            case 1: // playing
+              props.onPlay(event)
+              break
+            case 2: // paused
+              props.onPause(event)
+              break
           }
         },
         onError (event) {
@@ -153,31 +153,38 @@ function YTPlayer (props, ref) {
   }, [id, playerRef])
 
   if (error > 0) {
-    return (<div>Aw, shucks... it broke. YouTube error code: {error}</div>)
+    return <div>Aw, shucks... it broke. YouTube error code: {error}</div>
   }
 
-  return (<>
-          <Script src="https://www.youtube.com/iframe_api"></Script>
-          <iframe id={id}
-                  className={styles.video}
-                  type="text/html"
-                  src={`https://www.youtube-nocookie.com/embed/${video.id.slice(9)}?enablejsapi=1`}
-                  frameBorder="0">
-          </iframe>
-          </>)
+  return (
+    <>
+      <Script src='https://www.youtube.com/iframe_api' />
+      <iframe
+        id={id}
+        className={styles.video}
+        type='text/html'
+        src={`https://www.youtube-nocookie.com/embed/${video.id.slice(9)}?enablejsapi=1`}
+        frameBorder='0'
+      />
+    </>
+  )
 }
-YTPlayer = forwardRef(YTPlayer)
+
+// eslint-disable standard
+const YTPlayerRef = forwardRef(YTPlayer)
 
 export default function Video (props) {
   const { video } = props
-  const { channelDetail: { feedUrl }, id } = video
+  const {
+    channelDetail: { feedUrl },
+    id
+  } = video
   const [ready, setReady] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [started, setStarted] = useState(false)
 
   const playerRef = useRef()
   const recents = useRecentsStorage()
-  const componentId = useId()
 
   // load the channel info from the RSS feed
   const { data, error } = useSWR(() => {
@@ -199,20 +206,20 @@ export default function Video (props) {
   }, textFetcher)
 
   if (!feedUrl) {
-    return (<div>Loading...</div>)
+    return <div>Loading...</div>
   }
 
   if (error) {
     console.error(error)
-    return (<Error message={error.message} />)
+    return <Error message={error.message} />
   }
 
   if (!data) {
-    return (<div>Loading data...</div>)
+    return <div>Loading data...</div>
   }
 
   if (!recents.ready) {
-    return (<div>Loading recents...</div>)
+    return <div>Loading recents...</div>
   }
 
   const channel = parseChannel(feedUrl, data)
@@ -239,40 +246,52 @@ export default function Video (props) {
     window.history.back()
   }
 
-  const safeDescription = sanitizeHtml(videoData.description, { allowedTags: []})
+  const safeDescription = sanitizeHtml(videoData.description, { allowedTags: [] })
 
-  return (<main className={
-    [[true, styles.main], [playing, styles.playing], [started, styles.started]].reduce((acc, [include, style]) => {
-      if (include) {
-        return acc.concat(style)
+  return (
+    <main
+      className={[
+        [true, styles.main],
+        [playing, styles.playing],
+        [started, styles.started]
+      ]
+        .reduce((acc, [include, style]) => {
+          if (include) {
+            return acc.concat(style)
+          }
+          return acc
+        }, [])
+        .join(' ')}
+      style={
+        started
+          ? {}
+          : {
+              backgroundImage: `radial-gradient(transparent, #0c0c0c 70%), url(${videoData.poster})`
+            }
       }
-      return acc
-    }, []).join(' ')
-  }
-                style={ started ? {} : {
-                  backgroundImage: `radial-gradient(transparent, #0c0c0c 70%), url(${videoData.poster})`
-                }}>
-            <Player video={videoData}
-                    ref={playerRef}
-                    onPlay={handlePlaybackChange}
-                    onPause={handlePlaybackChange}
-                    onEnded={handlePlaybackChange}
-                    onReady={handleReady} />
-            <div className={styles.overview}>
-              <a className={styles.back} href="" onClick={handleBack}>&lt;</a>
-              <h1 className={styles.title}>{videoData.title}</h1>
-              { videoData.description &&
-                (<p className={styles.description}>{safeDescription}</p>)
-              }
-              <button onClick={playVideo}
-                      className={styles.playButton}
-                      disabled={!ready}>
-                Play
-              </button>
-            </div>
-          </main>)
+    >
+      <PlayerRef
+        video={videoData}
+        ref={playerRef}
+        onPlay={handlePlaybackChange}
+        onPause={handlePlaybackChange}
+        onEnded={handlePlaybackChange}
+        onReady={handleReady}
+      />
+      <div className={styles.overview}>
+        <a className={styles.back} href='' onClick={handleBack}>
+          &lt;
+        </a>
+        <h1 className={styles.title}>{videoData.title}</h1>
+        {videoData.description && <p className={styles.description}>{safeDescription}</p>}
+        <button onClick={playVideo} className={styles.playButton} disabled={!ready}>
+          Play
+        </button>
+      </div>
+    </main>
+  )
 }
 
 Video.getLayout = function (page) {
-  return (<>{page}</>)
+  return <>{page}</>
 }

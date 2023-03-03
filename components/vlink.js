@@ -3,11 +3,13 @@ import NextRouter from 'next/router'
 import ComponentMap from './component-map'
 
 const VRouterContext = createContext({
-  history: [{
-    path: '*invalid*',
-    Component: () => (<div>*Invalid*</div>),
-    pageProps: {}
-  }],
+  history: [
+    {
+      path: '*invalid*',
+      Component: () => <div>*Invalid*</div>,
+      pageProps: {}
+    }
+  ],
   setMain: () => {
     throw new Error('Accessed VRouterContext outside of a VRouterContext.Provider')
   }
@@ -31,11 +33,13 @@ const VRouterContext = createContext({
 export function RouterContext ({ path, pageProps, children }) {
   const Component = ComponentMap.get(path)
   const [context, setContext] = useState({
-    history: [{
-      path,
-      Component,
-      pageProps
-    }],
+    history: [
+      {
+        path,
+        Component,
+        pageProps
+      }
+    ],
     push: pushEntry
   })
   const nextRouter = NextRouter.useRouter()
@@ -61,9 +65,7 @@ export function RouterContext ({ path, pageProps, children }) {
     })
   }, [nextRouter, context])
 
-  return (<VRouterContext.Provider value={context}>
-            {children}
-          </VRouterContext.Provider>)
+  return <VRouterContext.Provider value={context}>{children}</VRouterContext.Provider>
 }
 
 /**
@@ -71,14 +73,14 @@ export function RouterContext ({ path, pageProps, children }) {
  * management.
  */
 export function useRouter () {
-  const { history, push, pop } = useContext(VRouterContext)
+  const { history, push } = useContext(VRouterContext)
   const nextRouter = NextRouter.useRouter()
 
   return {
     state: history.slice(-1)[0],
     length: history.length,
-    push: function ({ path, pageProps }) {
-      nextRouter.push('/', `#${path}`)
+    push: function ({ path, pageProps, query }) {
+      nextRouter.push('/', `#${path}${query ? `?query=${query}` : ''}`)
 
       const Component = ComponentMap.get(path)
       push(history, { path, Component, pageProps })
@@ -86,7 +88,8 @@ export function useRouter () {
     back: function () {
       // pop(history)
       return nextRouter.back()
-    }
+    },
+    reload: nextRouter.reload
   }
 }
 
@@ -105,6 +108,9 @@ export default function VLink ({ path, className, ...props }) {
     router.push({ path, pageProps: props })
   }
 
-  return (<a className={className} href={`#${path}`} onClick={handleClick}>{props.children}</a>)
-
+  return (
+    <a className={className} href={`#${path}`} onClick={handleClick}>
+      {props.children}
+    </a>
+  )
 }
