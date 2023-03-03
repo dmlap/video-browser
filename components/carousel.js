@@ -20,8 +20,12 @@ function handleFocusFor (ref, items, onFocus = noop) {
     window.requestAnimationFrame(() => {
       // bring the left edge of the focused list item to the left edge
       // of the carousel
-      const targetLeft = event.target.getBoundingClientRect().left
-      const carouselLeft = ref.current.getBoundingClientRect().left
+      const targetLeft = event?.target?.getBoundingClientRect()?.left
+      const carouselLeft = ref?.current?.getBoundingClientRect()?.left
+      if (!targetLeft || !carouselLeft) {
+        return
+      }
+
       ref.current.scrollLeft += targetLeft - carouselLeft
 
       onFocus(item)
