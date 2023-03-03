@@ -109,7 +109,7 @@ function parseRss (feedUrl, dom) {
     result.description = sanitizeHtml(description, NO_TAGS)
   }
 
-  const imageEl = dom.querySelector('channel > image')
+  const imageEl = dom.querySelector('channel > image, channel > itunes\\:image')
   if (imageEl) {
     for (const image of textExtractor(imageEl, 'url')) {
       // RSS-style image
@@ -172,7 +172,7 @@ function parseRssVideo (itemEl, channelDetail) {
 
   // check the various ways an image might be associated with this
   // video
-  const imageEl = itemEl.querySelector('image')
+  const imageEl = itemEl.querySelector('image, itunes\\:image')
   if (imageEl) {
     result.poster = imageEl.attributes.href.textContent
   }

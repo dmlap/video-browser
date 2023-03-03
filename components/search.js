@@ -10,14 +10,42 @@ import parseChannel from '../src/channel'
 import { OFFLINE } from '../env'
 import ytExample from '../public/yt-example-response.json'
 
+/**
+ * "Polyfill" for
+ * [Promise.allSettled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled)
+ * which is not available until Chrome 76.
+ */
+function allSettled(promises) {
+  if (promises.length < 1) {
+    return Promise.resolve([])
+  }
+
+  const results = []
+  let done = Promise.resolve()
+  for (const promise of promises) {
+    const caughtPromise = promise.catch((error) => {
+      return { status: 'error', error }
+    })
+    caughtPromise.then((result) => {
+      results.push(result)
+    })
+    done = done.then(() => caughtPromise).catch(() => caughtPromise)
+  }
+
+  done = done.then(() => {
+    return results
+  })
+  return done
+}
+
 function fetchAndParseChannel (feedUrl) {
   return fetch(feedUrl)
     .then((response) => response.text())
     .then((feedXml) => {
       const channel = parseChannel(feedUrl, feedXml)
       return {
-        status: 'resolved',
-        channel
+        status: 'fulfilled',
+        value: { channel }
       }
     })
 }
@@ -34,7 +62,7 @@ const JWP_URL = 'https://mini-delivery-hackweek.jwp.io/media-search'
 function jwpFetcher (url) {
   return fetch(url).then((response) => { return response.json() })
     .then((json) => {
-      return Promise.allSettled(json.results.map((result) => {
+      return allSettled(json.results.map((result) => {
         return finishOrTimeout(fetchAndParseChannel(result.channelLink), 2000)
       }))
     }).then((channelRequests) => {
@@ -80,7 +108,7 @@ function itunesFetcher (url) {
   return fetch(url + `&n=${Math.round(Math.random() * 9e8)}`)
     .then((response) => { return response.json() })
     .then((json) => {
-      return Promise.allSettled(json.results.map((result) => {
+      return allSettled(json.results.map((result) => {
         return finishOrTimeout(fetchAndParseChannel(result.feedUrl), 2000)
       }))
     }).then((channelRequests) => {
@@ -116,7 +144,7 @@ function youtubeFetcher (url) {
         console.log('faking youtube json due to error', json)
         json = ytExample
       }
-      return Promise.allSettled(json.items.map((item) => {
+      return allSettled(json.items.map((item) => {
         // abandon the request after 2 seconds
         return finishOrTimeout(fetchAndParseChannel(`https://www.youtube.com/feeds/videos.xml?channel_id=${item.snippet.channelId}`), 2000)
       })).then((channelRequests) => {

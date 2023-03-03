@@ -9,7 +9,7 @@
     "start": "next start",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lgsim": "node scripts/build-components-map.js ; VDRA_TV=webos next build && next export && scripts/replace-asset-prefix.sh && ares-launch -s 22 out",
-    "lgtv": "node scripts/build-components-map.js ; VDRA_TV=webos next build && next export && scripts/replace-asset-prefix.sh && ares-launch io.github.dmlap.video-browser",
+    "lgtv": "node scripts/build-components-map.js ; VDRA_TV=webos next build && next export && scripts/replace-asset-prefix.sh && ares-package out/ && ares-install io.github.dmlap.video-browser_0.0.1_all.ipk && ares-launch io.github.dmlap.video-browser",
     "lint": "next lint",
     "cypress": "cypress open"
   },
