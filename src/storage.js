@@ -12,7 +12,7 @@ function useStorage (key) {
   const [values, setValues] = useState(EMPTY)
 
   useEffect(() => {
-    const json = localStorage.getItem(key)
+    const json = window.localStorage.getItem(key)
 
     setReady(true)
     if (json) {
@@ -27,7 +27,7 @@ function useStorage (key) {
       }
     }
 
-    localStorage.setItem(key, '[]')
+    window.localStorage.setItem(key, '[]')
     setValues(EMPTY)
   }, [key])
 
@@ -40,7 +40,7 @@ function useStorage (key) {
 
     set: (newValues) => {
       const frozen = Object.freeze(Array.from(newValues))
-      localStorage.setItem(key, JSON.stringify(frozen))
+      window.localStorage.setItem(key, JSON.stringify(frozen))
       setValues(frozen)
     }
   }

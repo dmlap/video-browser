@@ -1,4 +1,5 @@
-.modal, .nonModal {
+.modal,
+.nonModal {
   position: absolute;
   width: 100vw;
   height: 100vh;
@@ -9,12 +10,11 @@
   justify-content: center;
   align-items: flex-end;
 
-  animation: .25s steps(1, jump-end) infinite frames;
+  animation: 0.25s steps(1, jump-end) infinite frames;
 }
 .modal {
   z-index: 1;
 }
-
 
 @keyframes frames {
   from {
@@ -36,12 +36,12 @@
   80% {
     background: url('/lgray2.png') center/cover;
   }
-
 }
 
-.modal .message, .nonModal .message {
+.modal .message,
+.nonModal .message {
   background: #0c0c0c;
-  padding: .5em;
+  padding: 0.5em;
   width: 7em;
 
   animation: 2s step-end 0s 1 showMessage;

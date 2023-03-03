@@ -25,7 +25,12 @@ export function LoadingMessage ({ message }) {
     }
   }, [])
 
-  return (<p className={styles.message}>{msg}{'...'.slice(0, step)}</p>)
+  return (
+    <p className={styles.message}>
+      {msg}
+      {'...'.slice(0, step)}
+    </p>
+  )
 }
 
 export default function Loading ({ modal }) {
@@ -33,7 +38,9 @@ export default function Loading ({ modal }) {
     modal = true
   }
 
-  return (<dialog open className={modal ? styles.modal : styles.nonModal}>
-            <LoadingMessage />
-          </dialog>)
+  return (
+    <dialog open className={modal ? styles.modal : styles.nonModal}>
+      <LoadingMessage />
+    </dialog>
+  )
 }

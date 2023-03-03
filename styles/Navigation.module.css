@@ -1,22 +1,25 @@
 .nav {
   background-color: #f5f5f5;
   color: #0c0c0c;
-  border-bottom: .1em outset;
+  border-bottom: 0.1em outset;
 
   display: flex;
   padding: 0 .5rem;
   align-items: center;
   height: 5rem;
 }
-.back, .home {
+.back,
+.home {
   flex: 0 0 auto;
   line-height: 2.2em;
   padding: 0 1em;
 }
-.home, .form {
+.home,
+.form {
   margin-left: 1em;
 }
-.home.home:focus, .home.home:hover {
+.home.home:focus,
+.home.home:hover {
   border-color: #3b78ff;
 }
 .form {
@@ -31,5 +34,5 @@
 }
 .input {
   flex: 1 0 10em;
-  padding: .25em .5em;
+  padding: 0.25em 0.5em;
 }

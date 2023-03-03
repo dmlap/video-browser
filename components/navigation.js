@@ -1,8 +1,7 @@
-import { useEffect, useState, useId, useMemo } from 'react'
+import { useState, useId, useMemo } from 'react'
 import debounce from 'lodash/debounce'
 
-import VLink from './vlink'
-import { useRouter } from './vlink'
+import VLink, { useRouter } from './vlink'
 
 import styles from '../styles/Navigation.module.css'
 
@@ -39,19 +38,27 @@ export default function Navigation (attributes) {
     return search(query)
   }
 
-  return (<nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
-          <button className={styles.back} onClick={handleBack}>&lt;</button>
-            <form className={styles.form} onSubmit={handleSubmit}>
-              <label htmlFor={id} className={styles.label}>
-                Search:
-              </label>
-              <input id={id}
-                     className={styles.input}
-                     type="text"
-                     onChange={handleChange}
-                     onKeyUp={handleKeyUp}
-                     value={query} />
-            </form>
-            <VLink path="home" className={styles.home}>Home</VLink>
-          </nav>)
+  return (
+    <nav className={(attributes.className ? attributes.className + ' ' : '') + styles.nav}>
+      <button className={styles.back} onClick={handleBack}>
+        &lt;
+      </button>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <label htmlFor={id} className={styles.label}>
+          Search:
+        </label>
+        <input
+          id={id}
+          className={styles.input}
+          type='text'
+          onChange={handleChange}
+          onKeyUp={handleKeyUp}
+          value={query}
+        />
+      </form>
+      <VLink path='home' className={styles.home}>
+        Home
+      </VLink>
+    </nav>
+  )
 }
