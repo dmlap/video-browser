@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import sanitizeHtml from 'sanitize-html'
 
 import Carousel from './carousel'
 import { ChannelCarousel } from './carousel'
@@ -28,20 +27,16 @@ export default function Home() {
 
   function handleVideoFocus (item) {
     const { title, description, poster } = item
-    const safeDescription = sanitizeHtml(description, { allowedTags: [] })
 
     setHero({
       title,
-      description: safeDescription,
+      description,
       image: poster
     })
   }
   function handleChannelFocus (item) {
     const { title, description, image } = item
-    const result = { title }
-
-    const safeDescription = sanitizeHtml(description, { allowedTags: [] })
-    result.description = safeDescription
+    const result = { title, description }
 
     if (image) {
       result.image = image

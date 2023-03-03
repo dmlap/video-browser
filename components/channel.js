@@ -1,5 +1,4 @@
 import useSWR from 'swr'
-import sanitizeHtml from 'sanitize-html'
 
 import { useEffect, useState } from 'react'
 
@@ -68,8 +67,6 @@ export default function Channel ({ feedUrl }) {
     }
   }
 
-  const safeDescription = sanitizeHtml(channel.description, { allowedTags: [] })
-
   return (<>
             <section className={styles.overview}>
             <div className={styles.detail}>
@@ -78,7 +75,7 @@ export default function Channel ({ feedUrl }) {
                 <p>{channel.category}</p>
               </header>
 
-              <p className={styles.description}>{safeDescription}</p>
+              <p className={styles.description}>{channel.description}</p>
 
               <label className={styles.subscribe}>
                 <input onChange={toggleSubscription}
